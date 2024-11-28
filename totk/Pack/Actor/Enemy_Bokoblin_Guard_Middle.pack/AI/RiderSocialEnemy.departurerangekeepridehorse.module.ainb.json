@@ -1,0 +1,673 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "RiderSocialEnemy.departurerangekeepridehorse.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "9a4406db-7c4c-4d6d-f08e-463972ec4463",
+      "Left Node Index": 7,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "float": [
+      {
+        "Name": "TotalWaitFrame",
+        "Notes": "",
+        "Default Value": 0.0
+      },
+      {
+        "Name": "SuccessDepatureDist",
+        "Notes": "",
+        "Default Value": 25.0
+      },
+      {
+        "Name": "DepatureGoalDist",
+        "Notes": "",
+        "Default Value": 30.0
+      },
+      {
+        "Name": "WaitFrame",
+        "Notes": "",
+        "Default Value": 150.0
+      },
+      {
+        "Name": "WaitFrameRand",
+        "Notes": "",
+        "Default Value": 150.0
+      }
+    ]
+  },
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Name": "ExecuteBSAInvokeActionVerbWithArgs",
+      "GUID": "d5e54e71-1307-4044-9aa3-d1af13bdb8e2",
+      "Precondition Nodes": [
+        5
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ActionSlot",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "ActionVerb",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 198
+          },
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "UseNavMeshCharacterAvoidance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          },
+          {
+            "Name": "UsePathfinding",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          },
+          {
+            "Name": "UsePerceptionAvoidance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "DesiredDistanceFromTarget",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 2,
+            "Value": -1.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ActionVerbVariation",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": ""
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "AttackPos",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              999999.0,
+              999999.0,
+              999999.0
+            ]
+          },
+          {
+            "Name": "DesiredVelocity",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              999999.0,
+              999999.0,
+              999999.0
+            ]
+          },
+          {
+            "Name": "TargetPos",
+            "Node Index": 13,
+            "Parameter Index": 0,
+            "Value": [
+              999999.0,
+              999999.0,
+              999999.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 1,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathCalcDirAndDistToTarget",
+      "GUID": "f6e659ba-ceef-424d-f89b-a4d2a46c229a",
+      "Precondition Nodes": [
+        1,
+        4
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "CalcOnXZPlane",
+            "Value": true
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "StartPosition",
+            "Node Index": 2,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "TargetPosition",
+            "Node Index": 12,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "TargetDistance",
+            "Is Output": true
+          },
+          {
+            "Name": "TargetWorldYDistance"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "TargetDirection"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 2,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryActorGetPosition",
+      "GUID": "e2e3b225-ec13-4ce3-28a5-76b9b826f333",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Position",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "Position"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathLessOrEqualF32",
+      "GUID": "bfbace01-7e78-40fe-29ac-f1870bfbbfc3",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": 0.0
+          },
+          {
+            "Name": "F32Base",
+            "Node Index": 1,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "F32Base"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 4,
+      "Name": "ExecuteGenericCounter",
+      "GUID": "d7fd08f7-3e5e-494b-e2bd-8dd17430d3da",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ResultBeforeFinish",
+            "Value": 2
+          },
+          {
+            "Name": "ResultOnFinish",
+            "Value": 2
+          }
+        ],
+        "float": [
+          {
+            "Name": "BaseFrameTime",
+            "Local Blackboard Index": 3,
+            "Value": 30.0
+          },
+          {
+            "Name": "RandomTimeMax",
+            "Local Blackboard Index": 4,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "ElapsedFrameTime"
+          },
+          {
+            "Name": "PercentComplete",
+            "Is Output": true
+          },
+          {
+            "Name": "RemainingFrameTime"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 5,
+      "Name": "",
+      "GUID": "27585996-9858-4fca-18a1-a4f25465cde8",
+      "Precondition Nodes": [
+        3
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 8,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 8,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 6,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 11,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "ae55ae12-2222-46e4-76bc-26f41f92224e"
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 7,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "eb5bba7-d653-443a-b0a1-4a01fbc7b332",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 4,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 0,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 9,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathLessOrEqualF32",
+      "GUID": "f9092bd9-da51-4fb8-f799-64deddaf2382",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 1.0
+          },
+          {
+            "Name": "F32Base",
+            "Node Index": 4,
+            "Parameter Index": 1,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 4,
+            "Parameter": "F32Base"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 9,
+      "Name": "",
+      "GUID": "df8c9bcc-da02-4f32-3e89-0fc35e2463bc",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 3,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 3,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 10,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 5,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "7da86565-2b27-4d07-5284-4dbd48405ba2"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "d5d75e73-e0f-489d-5bb7-267c09a2b129"
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 12,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "d9f502e6-80ff-4ca0-8eb3-e1136b9b437e",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "TargetPos"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "TargetPosition",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "TargetPosition"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 13,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "d9f502e6-80ff-4ca0-8eb3-e1136b9b437e",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "TargetPos"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "TargetPos",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 0,
+            "Parameter": "TargetPos"
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x1db55a57"
+  }
+}

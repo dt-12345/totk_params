@@ -1,0 +1,2581 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "Bokoblin.action.largeattack.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "fe00d788-8cf4-4863-cfa4-19b025da1620",
+      "Left Node Index": 17,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "int": [
+      {
+        "Name": "InWeapon",
+        "Notes": "",
+        "Default Value": 0
+      }
+    ],
+    "float": [
+      {
+        "Name": "DistanceRatioOnMove",
+        "Notes": "",
+        "Default Value": 0.75
+      },
+      {
+        "Name": "CloseDist",
+        "Notes": "",
+        "Default Value": 1.399999976158142
+      },
+      {
+        "Name": "PursuitDist",
+        "Notes": "",
+        "Default Value": 4.199999809265137
+      },
+      {
+        "Name": "LinearVelocityReduceRatio",
+        "Notes": "",
+        "Default Value": 1.0
+      },
+      {
+        "Name": "AngularVelocityReduceRatio",
+        "Notes": "",
+        "Default Value": 1.0
+      },
+      {
+        "Name": "RotateSpeed",
+        "Notes": "",
+        "Default Value": 0.0,
+        "File Reference": {
+          "Filename": "Work/Gdyml/game__bsa__MovementParam.gdyml"
+        }
+      }
+    ],
+    "bool": [
+      {
+        "Name": "IsSeqPursuit",
+        "Notes": "",
+        "Default Value": false
+      },
+      {
+        "Name": "IsRotateOnTranslateEvent",
+        "Notes": "",
+        "Default Value": true
+      },
+      {
+        "Name": "IsUseSecondAttackAS",
+        "Notes": "",
+        "Default Value": false
+      }
+    ]
+  },
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Name": "ExecuteASPlay",
+      "GUID": "4cfeaffc-980f-46ba-9e83-6dade04365d4",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "BusyUntilFinished",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreSameCommand",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "PlayRate",
+            "Value": 1.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASCommand",
+            "Value": "AttackPursuit"
+          },
+          {
+            "Name": "Partial",
+            "Value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 1,
+      "Name": "SelectorSeqPursuit",
+      "GUID": "80513ab-e363-4653-db99-f7d0ff30650d",
+      "Precondition Nodes": [
+        3
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "WeaponRangeCalcMethod",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ConsiderWeaponRange",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "IsHitAttackNoPursuit",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "IsSeqPursuit",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": false
+          },
+          {
+            "Name": "OuterStopPersuit",
+            "Node Index": 19,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "PursuitDist",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 2,
+            "Value": 4.199999809265137
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 19,
+            "Parameter": "OuterStopPersuit"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 5,
+            "Connection Name": "Attack"
+          },
+          {
+            "Node Index": 3,
+            "Connection Name": "Pursuit"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 2,
+      "Name": "OneShotPhysicsCctSetForwardSpeedMpf",
+      "GUID": "a255804e-6957-4c7e-6cb9-029be8dd7a47",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "SpeedMpf",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 3,
+      "Name": "",
+      "GUID": "f2603c3-e340-4c35-239b-5152722d9dbb",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 0,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 2,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 4,
+      "Name": "SelectorSeqPursuit",
+      "GUID": "a2b4d502-76b9-433f-8b8c-e532a0560e40",
+      "Precondition Nodes": [
+        3
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "WeaponRangeCalcMethod",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ConsiderWeaponRange",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "IsHitAttackNoPursuit",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "IsSeqPursuit",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "OuterStopPersuit",
+            "Node Index": 19,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "PursuitDist",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 10000.0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 19,
+            "Parameter": "OuterStopPersuit"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 14,
+            "Connection Name": "Attack"
+          },
+          {
+            "Node Index": 1,
+            "Connection Name": "Pursuit"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 5,
+      "Name": "",
+      "GUID": "edb98a89-1962-4002-2984-60798b63f425",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 6,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 12,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 40,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Name": "ExecuteASPlay",
+      "GUID": "b3142d8a-d306-4618-f391-303995e88f6f",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "BusyUntilFinished",
+            "Value": false
+          },
+          {
+            "Name": "IsIgnoreSameCommand",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "PlayRate",
+            "Value": 1.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASCommand",
+            "Value": "MeleeWeaponDoubleAttack"
+          },
+          {
+            "Name": "Partial",
+            "Value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 7,
+      "Name": "",
+      "GUID": "3f810247-c4da-48e3-3eb3-b8ce60cf96d0",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Local Blackboard Index": 2,
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 2,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 4,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 49,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryASGetHoldEventNoChangeAS",
+      "GUID": "ad3f639e-2e55-411c-ffa8-753f836adf90",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          },
+          {
+            "Name": "SearchForPartialSlotNumOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "string": [
+          {
+            "Name": "Partial",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": ""
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsActiveHoldEvent",
+            "Is Output": true
+          },
+          {
+            "Name": "IsPulseHoldEvent"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 9,
+      "Name": "",
+      "GUID": "621e42a2-1ad8-479d-8cb9-a02a717dd1ac",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 8,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 8,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 11,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 10,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "fe896990-dc00-4561-e880-7e42c069b644"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Name": "ExecuteGenericSetResultBusy",
+      "GUID": "9b332ded-9157-4eba-bb85-707a00d6ba37"
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 12,
+      "Name": "",
+      "GUID": "1424968b-4739-43bc-e182-aa45a027879a",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 15,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 15,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 13,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 9,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 13,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "217e5fbd-79e5-4294-dabc-5f2e068a7a1f"
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 14,
+      "Name": "",
+      "GUID": "4dd4e248-ee34-404e-1888-5a6bf7bd134e",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 49,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 12,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 15,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryASIsCurrentCommandFinished",
+      "GUID": "f2ff1f8f-c02d-4506-d6a6-921bccb1d0f2",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "Loop",
+            "Value": false
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "Partial",
+            "Value": ""
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsFinished",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 16,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryEquipmentGetEquipWeaponType",
+      "GUID": "1a630c94-3a52-425e-86a7-935dc0d10886",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "WeaponType",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 18,
+            "Parameter": "WeaponType"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_SplitTiming",
+      "Node Index": 17,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "870e94d-d7ac-4db2-329a-bcc21ec8178f",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ChildStateSyncPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 18,
+            "Connection Name": "Enter"
+          },
+          {
+            "Node Index": 7,
+            "Connection Name": "Update"
+          },
+          {
+            "Node Index": 7,
+            "Connection Name": "Leave"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 18,
+      "Name": "ExecuteBlackboardSetS32",
+      "GUID": "3477e2bb-ce12-4226-599d-250ac03ed342",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "InWeapon"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "S32",
+            "Node Index": 16,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Int Input Link": [
+          {
+            "Node Index": 16,
+            "Parameter": "S32"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 19,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathNotEqualS32",
+      "GUID": "d462a152-1e4f-429e-e0a9-ae3d8622eac1",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "S32",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": 0
+          },
+          {
+            "Name": "S32Base",
+            "Node Index": 16,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Int Input Link": [
+          {
+            "Node Index": 16,
+            "Parameter": "S32Base"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 20,
+      "Name": "ExecutePhysicsCctReduceVelocityByPlug",
+      "GUID": "73d4402-a5cd-4ad4-68b1-a51162547f88",
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "AngularVelocityReduceRatio",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 4,
+            "Value": 0.699999988079071
+          },
+          {
+            "Name": "LinearVelocityReduceRatio",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 3,
+            "Value": 0.9399999976158142
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 21,
+      "Name": "ExecuteASPlay",
+      "GUID": "f3882368-1c75-318-3102-b39ce34a8b96",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "BusyUntilFinished",
+            "Value": false
+          },
+          {
+            "Name": "IsIgnoreSameCommand",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "PlayRate",
+            "Value": 1.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASCommand",
+            "Value": "MeleeWeaponSingleAttack"
+          },
+          {
+            "Name": "Partial",
+            "Value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 22,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryASGetHoldEvent",
+      "GUID": "c119b292-de6f-441-6f0a-1358f27ec870",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ASHoldEvent",
+            "Value": 10
+          },
+          {
+            "Name": "Slot",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "FirstFrame",
+            "Is Output": true
+          },
+          {
+            "Name": "IsHold",
+            "Is Output": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "CurrentFrame",
+            "Is Output": true
+          },
+          {
+            "Name": "EndFrame",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 23,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathF32Min",
+      "GUID": "f81de8d-a059-37c-b203-1f7f334c456c",
+      "Precondition Nodes": [
+        8,
+        15
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "Inputs",
+            "Node Index": -102,
+            "Parameter Index": 2,
+            "Value": 0.0,
+            "Sources": [
+              {
+                "Node Index": 26,
+                "Parameter Index": 0
+              },
+              {
+                "Node Index": 33,
+                "Parameter Index": 0
+              }
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Min",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 26,
+            "Parameter": "Inputs"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 24,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathSubF32",
+      "GUID": "75959f42-1f41-757-3e0a-6c00eda660a6",
+      "Precondition Nodes": [
+        4,
+        4
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 22,
+            "Parameter Index": 1,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": 22,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 22,
+            "Parameter": "InputA"
+          },
+          {
+            "Node Index": 22,
+            "Parameter": "InputB"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 25,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathDivF32",
+      "GUID": "9f156fad-9b20-455-4a07-7015659eaf99",
+      "Precondition Nodes": [
+        11,
+        6
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 29,
+            "Parameter Index": 0,
+            "Value": 1.5
+          },
+          {
+            "Name": "InputB",
+            "Node Index": 24,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 29,
+            "Parameter": "InputA"
+          },
+          {
+            "Node Index": 24,
+            "Parameter": "InputB"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 26,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathfClamp2",
+      "GUID": "36ceefe4-9c41-5e7-130e-b67470efd286",
+      "Precondition Nodes": [
+        12
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "Max",
+            "Value": 0.30000001192092896
+          },
+          {
+            "Name": "Min",
+            "Value": 0.009999999776482582
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": 30,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 30,
+            "Parameter": "F32"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 27,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryBSAGetActionVerbArgs",
+      "GUID": "5a3fd055-ae4b-391-141e-0d18cc34db57",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ActionSlot",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "TargetSlot"
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsAttackPosValid"
+          },
+          {
+            "Name": "IsDesiredVeloctiyValid"
+          },
+          {
+            "Name": "IsTargetPosValid"
+          },
+          {
+            "Name": "IsUseNavMeshCharacterAvoidance"
+          },
+          {
+            "Name": "IsUsePerceptionAvoidance"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "AttackPos",
+            "Is Output": true
+          },
+          {
+            "Name": "DesiredVelocity"
+          },
+          {
+            "Name": "TargetPos",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 42,
+            "Parameter": "TargetPos"
+          },
+          {
+            "Node Index": 28,
+            "Parameter": "AttackPos"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 28,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryActorGetDotForwardAndDirToTarget",
+      "GUID": "ca0d2074-c04-c34-f330-c28d9726b139",
+      "Precondition Nodes": [
+        9
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "CalcOnXZPlane",
+            "Value": true
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "TargetPos",
+            "Node Index": 27,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "DistanceToTarget",
+            "Is Output": true
+          },
+          {
+            "Name": "Dot",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 29,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathMulF32",
+      "GUID": "b6df9d05-49a1-744-12b-96c28407c2a4",
+      "Precondition Nodes": [
+        10,
+        15
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 28,
+            "Parameter Index": 1,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": 33,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 28,
+            "Parameter": "InputA"
+          },
+          {
+            "Node Index": 33,
+            "Parameter": "InputB"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 30,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathMulF32",
+      "GUID": "663e107f-be1c-b0-db29-1e70b5d05521",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 25,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": 0.5
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 25,
+            "Parameter": "InputA"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 31,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryEquipmentUserGetWeaponRange",
+      "GUID": "8e4a0b44-ec4d-44f-4738-66466aa67459",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "WeaponRangeType",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "WeaponRangeCalcMethod",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "WeaponRange",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 32,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathSubF32",
+      "GUID": "27f32010-28eb-248-5409-057f301d21f1",
+      "Precondition Nodes": [
+        10,
+        13
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 28,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": 31,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 28,
+            "Parameter": "InputA"
+          },
+          {
+            "Node Index": 31,
+            "Parameter": "InputB"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 33,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathF32Max2",
+      "GUID": "a1f848c4-b37a-39c-d423-2a478311d888",
+      "Precondition Nodes": [
+        16
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "a",
+            "Node Index": 34,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "b",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 34,
+            "Parameter": "a"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 34,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathSubF32",
+      "GUID": "c518d4d4-5eb1-48c-314-67f9abbab7cf",
+      "Precondition Nodes": [
+        14
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 32,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": 1.399999976158142
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 32,
+            "Parameter": "InputA"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 35,
+      "Name": "",
+      "GUID": "3b0e7f6f-f8db-45f1-b785-844e20ae39d3",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 22,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 22,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 37,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 20,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 36,
+      "Name": "OneShotPhysicsCctSetForwardSpeedMpf",
+      "GUID": "1a8007bf-ab61-4e29-798d-5b8a2501f79f",
+      "Precondition Nodes": [
+        5
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "SpeedMpf",
+            "Node Index": 23,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 23,
+            "Parameter": "SpeedMpf"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 37,
+      "Name": "",
+      "GUID": "1679f7f9-aba3-4df9-9ea9-65840e9a933c",
+      "Precondition Nodes": [
+        17
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": true
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 39,
+            "Parameter Index": 0,
+            "Value": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 39,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 38,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 36,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 38,
+      "Name": "OneShotPhysicsCctSetForwardSpeedMpf",
+      "GUID": "3b9fbfa6-e441-4f80-71aa-cd858d0cb8bd",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "SpeedMpf",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 39,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryCheckCliffWithLOS",
+      "GUID": "8b461914-54a3-4ff0-dc99-c2bd9b4c342d",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsCheckBackward",
+            "Value": false
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          },
+          {
+            "Name": "SetCheckDirection",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "CheckDistance",
+            "Value": 2.5
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "CharacterType",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "CheckDirection",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsCliff",
+            "Is Output": true
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "FinalPos"
+          },
+          {
+            "Name": "HitPos"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 40,
+      "Name": "",
+      "GUID": "5d1319ed-ae16-728-200a-676027a6ea43",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 22,
+            "Parameter Index": 1,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 22,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 43,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 44,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 41,
+      "Name": "ExecutePhysicsSetForwardDir",
+      "GUID": "5b80dd73-924f-257-3614-ca7989a264ed",
+      "Precondition Nodes": [
+        18
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsDirZeroWhenLeave",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "Vector",
+            "Node Index": 42,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 42,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsCctCalcDirRotateToTarget",
+      "GUID": "1a137a3a-c6c-525-c419-670ee114b5d1",
+      "Precondition Nodes": [
+        9
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "MinRotateRate",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0.10000000149011612
+          },
+          {
+            "Name": "ReachingThreshold",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.05000000074505806
+          },
+          {
+            "Name": "RotateAngularSpeed",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 5,
+            "Value": 3.0
+          },
+          {
+            "Name": "RotateBaseLerpRate",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.20000000298023224
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "ForceTurnDir",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "TargetPos",
+            "Node Index": 27,
+            "Parameter Index": 2,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "ReachedToTarget"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "RotateDirToTarget",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 41,
+            "Parameter": "RotateDirToTarget"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 43,
+      "Name": "",
+      "GUID": "85a77703-911a-f1-950c-fdc9eabb3dc9",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 47,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 35,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 44,
+      "Name": "",
+      "GUID": "ab8fadbd-95c0-cd8-641d-1e01ba4d5393",
+      "Precondition Nodes": [
+        19
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 46,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 46,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 45,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 50,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 45,
+      "Name": "",
+      "GUID": "e1e2d944-accf-fb7-e910-01ba923de0cd",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 41,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 50,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 46,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryASGetHoldEventRotate",
+      "GUID": "50d1ccdc-367-aed-bf2f-9078b6a9cb7a",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          },
+          {
+            "Name": "SearchForPartialSlotNumOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "string": [
+          {
+            "Name": "Partial",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": ""
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsActiveHoldEvent",
+            "Is Output": true
+          },
+          {
+            "Name": "IsPulseHoldEvent"
+          }
+        ],
+        "string": [
+          {
+            "Name": "Bone"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 47,
+      "Name": "",
+      "GUID": "5becfd7-23cb-4ff-8400-0984f23bd028",
+      "Precondition Nodes": [
+        21
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 52,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 52,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 41,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 48,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 48,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "3fd0b184-3a8c-638-5438-698ad9ce4b91"
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 49,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "69d4bd6c-19df-654-7909-7acc7a5d9e95",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 21,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 40,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 50,
+      "Name": "ExecutePhysicsCctReduceVelocityByPlug",
+      "GUID": "b7a8ebcd-57ac-47d8-54be-0070d4358e6c",
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "AngularVelocityReduceRatio",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0.44999998807907104
+          },
+          {
+            "Name": "LinearVelocityReduceRatio",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 51,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryASGetHoldEvent",
+      "GUID": "d35b15df-cb2d-b2b-6715-24b062f03cb1",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ASHoldEvent",
+            "Value": 11
+          },
+          {
+            "Name": "Slot",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "FirstFrame"
+          },
+          {
+            "Name": "IsHold",
+            "Is Output": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "CurrentFrame"
+          },
+          {
+            "Name": "EndFrame"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 52,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryGenericMultiBool",
+      "GUID": "e92f121d-4c56-b4-9d39-3c1b68a86453",
+      "Precondition Nodes": [
+        22,
+        20
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "Mode",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "MultiBool",
+            "Node Index": -100,
+            "Parameter Index": 2,
+            "Value": false,
+            "Sources": [
+              {
+                "Node Index": 53,
+                "Parameter Index": 0
+              },
+              {
+                "Node Index": 51,
+                "Parameter Index": 1
+              }
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 53,
+            "Parameter": "MultiBool"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 53,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryGetBoolSimple",
+      "GUID": "21b0e9fc-1635-8ea-661b-53eb7453ec5e",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0xa4184f5"
+  }
+}

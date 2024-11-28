@@ -1,0 +1,1642 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "ForestGiant.common.InOutWater.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "78f402cd-3086-4aa3-aa89-ec54c83956c5",
+      "Left Node Index": 8,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "string": [
+      {
+        "Name": "ControllerName",
+        "Notes": "",
+        "Default Value": "Body"
+      },
+      {
+        "Name": "RigidBodyName",
+        "Notes": "",
+        "Default Value": "Body_Awake"
+      }
+    ],
+    "float": [
+      {
+        "Name": "WaterDepthOffset",
+        "Notes": "",
+        "Default Value": 0.0
+      },
+      {
+        "Name": "InWaterDepth",
+        "Notes": "",
+        "Default Value": 0.0
+      },
+      {
+        "Name": "OutOfWaterOffset",
+        "Notes": "",
+        "Default Value": 0.0
+      }
+    ],
+    "bool": [
+      {
+        "Name": "IsGroundDist",
+        "Notes": "",
+        "Default Value": false
+      },
+      {
+        "Name": "IsUnderwater",
+        "Notes": "",
+        "Default Value": false,
+        "File Reference": {
+          "Filename": "Work/Component/Blackboard/BlackboardParamTable/UnderwaterUser.engine__component__BlackboardParamTable.gyml"
+        }
+      }
+    ]
+  },
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsRigidBodyGetWaterDepth",
+      "GUID": "8719b410-b6ee-4e6b-acbe-843b76dff13b",
+      "Precondition Nodes": [
+        3
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "userdefined": [
+          {
+            "Name": "RigidBodyEntity",
+            "Class": "const phive::RigidBodyEntity",
+            "Node Index": 3,
+            "Parameter Index": 2,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "WaterDepth",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 1,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathAddF32",
+      "GUID": "6cd1fcc9-fac3-4ca8-b389-6faba24d73bf",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 0,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 0,
+            "Parameter": "InputA"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 2,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsRigidBodyGetWaterType",
+      "GUID": "8d384737-4688-4fb9-24b7-5920c4ae23fd",
+      "Precondition Nodes": [
+        3
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "userdefined": [
+          {
+            "Name": "RigidBodyEntity",
+            "Class": "const phive::RigidBodyEntity",
+            "Node Index": 3,
+            "Parameter Index": 2,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "Material",
+            "Is Output": true
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsInWater",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 5,
+            "Parameter": "Material"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsGetRigidBodyByControllerAndBodyName",
+      "GUID": "135471a7-7a20-494d-5f88-2dd40932ffa8",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "string": [
+          {
+            "Name": "ControllerName",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": "Body"
+          },
+          {
+            "Name": "RigidBodyName",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": "Body_Awake"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "userdefined": [
+          {
+            "Name": "RigidBody",
+            "Class": "phive::RigidBody"
+          },
+          {
+            "Name": "RigidBodyConst",
+            "Class": "const phive::RigidBody"
+          },
+          {
+            "Name": "RigidBodyEntity",
+            "Is Output": true,
+            "Class": "const phive::RigidBodyEntity"
+          },
+          {
+            "Name": "RigidBodySensor",
+            "Class": "const phive::RigidBodySensor"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 0,
+            "Parameter": "RigidBodyEntity"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 4,
+      "Name": "",
+      "GUID": "521180fe-b44f-c4d7-cf71-76f2f0b3e84a",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 2,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 5,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 9,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_S32Selector",
+      "Node Index": 5,
+      "Name": "",
+      "GUID": "c924b2be-584f-139f-eabb-bab317d5d019",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          },
+          {
+            "Name": "InputValue",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectIfSameInstance",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "Input",
+            "Node Index": 2,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 7,
+            "Condition": 41
+          },
+          {
+            "Node Index": 11,
+            "Condition": "Default"
+          }
+        ],
+        "Int Input Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "Input"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryIsAcceptLaveDamage",
+      "GUID": "35811f73-9e2f-984d-7e0c-e9afb7779114",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsAccept",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 7,
+      "Name": "",
+      "GUID": "2c433c5-2ac3-77a4-d206-31bde00e45c3",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 6,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 6,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 9,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 11,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 8,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "2c7751e9-e6ca-4513-c292-a8bb95aaa2d6",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Local Blackboard Index": 1,
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 19,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 4,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 9,
+      "Name": "ExecuteBlackboardSetBool",
+      "GUID": "5ae88224-6de4-2a27-8115-af1f38ed12f2",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": false
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "IsUnderwater"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Name": "ExecuteBlackboardSetBool",
+      "GUID": "32f1b4b1-e4d6-342-2c63-60d1c3cc4f3e",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": false
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "IsUnderwater"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 11,
+      "Name": "",
+      "GUID": "4fc6249a-8ae-e90c-c783-9b3b2c6b8734",
+      "Precondition Nodes": [
+        5
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 13,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 13,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 12,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 9,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 12,
+      "Name": "",
+      "GUID": "bd283a36-8d03-879d-31cc-d1559c431ae6",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Local Blackboard Index": 0,
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 14,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 10,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Expression",
+      "Node Index": 13,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "ce37797f-76b0-a9b-4c68-f0bd2a397b66",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ExpressionBase",
+            "EXB Index": 0,
+            "Function": {
+              "Base Index Pre-Command Entry": -1,
+              "Pre-Entry Static Memory Usage": 0,
+              "Output Data Type": "immediate_or_user",
+              "Input Data Type": "immediate_or_user",
+              "Instructions": [
+                {
+                  "Type": "Store",
+                  "Data Type": "s32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Imm",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 1,
+                  "RHS Value": 1
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 0,
+                  "Signature": "GetBBCodeFloat( Float, Int )"
+                },
+                {
+                  "Type": "LessThanEqual",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "UserIn",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "bool",
+                  "LHS Source": "UserOut",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "Terminator"
+                }
+              ]
+            },
+            "Value": 0
+          }
+        ],
+        "string": [
+          {
+            "Name": "DefTags",
+            "Value": ""
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "WaterDepth",
+            "Node Index": 1,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsInWater",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "WaterDepth"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 14,
+      "Name": "",
+      "GUID": "b8b936b9-3a00-ea0c-44ac-8464670996c8",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 17,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 17,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 16,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 10,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Expression",
+      "Node Index": 15,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "6dff6607-1fba-7532-5761-e71c7b722d2f",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ExpressionBase",
+            "EXB Index": 1,
+            "Function": {
+              "Base Index Pre-Command Entry": -1,
+              "Pre-Entry Static Memory Usage": 0,
+              "Output Data Type": "immediate_or_user",
+              "Input Data Type": "immediate_or_user",
+              "Instructions": [
+                {
+                  "Type": "Store",
+                  "Data Type": "s32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Imm",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 1,
+                  "RHS Value": 1
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 4,
+                  "Signature": "GetBBCodeFloat( Float, Int )"
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "s32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Imm",
+                  "LHS Index/Value": 8,
+                  "RHS Index/Value": 2,
+                  "RHS Value": 2
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 8,
+                  "Signature": "GetBBCodeFloat( Float, Int )"
+                },
+                {
+                  "Type": "Add",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 8
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 4
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "UserIn",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "GreaterThanEqual",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "bool",
+                  "LHS Source": "UserOut",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 4
+                },
+                {
+                  "Type": "Terminator"
+                }
+              ]
+            },
+            "Value": 0
+          }
+        ],
+        "string": [
+          {
+            "Name": "DefTags",
+            "Value": ""
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "GroundDistance",
+            "Node Index": 17,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 17,
+            "Parameter": "GroundDistance"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 16,
+      "Name": "",
+      "GUID": "f1a06675-f726-5988-bc88-3a50bd8d0830",
+      "Precondition Nodes": [
+        6
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 15,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 15,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 10,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 9,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 17,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryWaterSurfaceHeightToGroundDistance",
+      "GUID": "56428c91-a7ae-a5df-7343-2a3c430ec172",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "IsCheckFrontAndBack",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "CheckDistance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 2.0
+          },
+          {
+            "Name": "FrontAndBackDistance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.10000000149011612
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsGround",
+            "Is Output": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "GroundDistance",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Expression",
+      "Node Index": 18,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "9448dd47-bcd9-e75-f198-39024425c250",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ExpressionBase",
+            "EXB Index": 2,
+            "Function": {
+              "Base Index Pre-Command Entry": -1,
+              "Pre-Entry Static Memory Usage": 0,
+              "Output Data Type": "immediate_or_user",
+              "Input Data Type": "immediate_or_user",
+              "Instructions": [
+                {
+                  "Type": "Store",
+                  "Data Type": "s32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Imm",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 1,
+                  "RHS Value": 1
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 4,
+                  "Signature": "GetBBCodeFloat( Float, Int )"
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "s32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Imm",
+                  "LHS Index/Value": 8,
+                  "RHS Index/Value": 2,
+                  "RHS Value": 2
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 8,
+                  "Signature": "GetBBCodeFloat( Float, Int )"
+                },
+                {
+                  "Type": "Subtract",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 8
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 4
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "UserIn",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "LessThanEqual",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "bool",
+                  "LHS Source": "UserOut",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 4
+                },
+                {
+                  "Type": "Terminator"
+                }
+              ]
+            },
+            "Value": 0
+          }
+        ],
+        "string": [
+          {
+            "Name": "DefTags",
+            "Value": ""
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "WaterDepth",
+            "Node Index": 1,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsOutWater",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "WaterDepth"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 19,
+      "Name": "",
+      "GUID": "15d9493c-4fba-1494-5b7c-92285614b29a",
+      "Precondition Nodes": [
+        8
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 18,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 18,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 9,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 20,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 20,
+      "Name": "",
+      "GUID": "2bd3ec9b-a928-4165-2e02-4f3537323935",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Local Blackboard Index": 0,
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 21,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 10,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 21,
+      "Name": "",
+      "GUID": "d9a6cdea-c609-66bd-ed18-c0a94d9d82ba",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 17,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 17,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 23,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 10,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Expression",
+      "Node Index": 22,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "ced683da-1c4a-89f-444f-768f01e1dd8f",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ExpressionBase",
+            "EXB Index": 2,
+            "Function": {
+              "Base Index Pre-Command Entry": -1,
+              "Pre-Entry Static Memory Usage": 0,
+              "Output Data Type": "immediate_or_user",
+              "Input Data Type": "immediate_or_user",
+              "Instructions": [
+                {
+                  "Type": "Store",
+                  "Data Type": "s32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Imm",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 1,
+                  "RHS Value": 1
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 4,
+                  "Signature": "GetBBCodeFloat( Float, Int )"
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "s32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Imm",
+                  "LHS Index/Value": 8,
+                  "RHS Index/Value": 2,
+                  "RHS Value": 2
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 8,
+                  "Signature": "GetBBCodeFloat( Float, Int )"
+                },
+                {
+                  "Type": "Subtract",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 8
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 4
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "UserIn",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "LessThanEqual",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "bool",
+                  "LHS Source": "UserOut",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 4
+                },
+                {
+                  "Type": "Terminator"
+                }
+              ]
+            },
+            "Value": 0
+          }
+        ],
+        "string": [
+          {
+            "Name": "DefTags",
+            "Value": ""
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "GroundDistance",
+            "Node Index": 17,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 17,
+            "Parameter": "GroundDistance"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 23,
+      "Name": "",
+      "GUID": "3d927d2b-18bf-a492-e239-886fa96fa5fe",
+      "Precondition Nodes": [
+        9
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 22,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 22,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 9,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 10,
+            "Condition": "False"
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x37375299"
+  }
+}

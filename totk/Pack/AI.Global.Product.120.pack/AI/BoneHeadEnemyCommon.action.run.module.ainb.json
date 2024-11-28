@@ -1,0 +1,987 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "BoneHeadEnemyCommon.action.run.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "798d5625-3cc6-486e-3e93-76045db44108",
+      "Left Node Index": 13,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "float": [
+      {
+        "Name": "FinLength",
+        "Notes": "",
+        "Default Value": 0.0,
+        "File Reference": {
+          "Filename": "Work/Gdyml/game__enemy__BoneEnemyPartsParam.gdyml"
+        }
+      },
+      {
+        "Name": "MaxSpeed",
+        "Notes": "",
+        "Default Value": 0.0,
+        "File Reference": {
+          "Filename": "Work/Gdyml/game__enemy__BoneEnemyPartsParam.gdyml"
+        }
+      }
+    ]
+  },
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryBSAGetActionVerbArgs",
+      "GUID": "ffa3c0e0-229d-4b47-2a8b-f1d70d690329",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ActionSlot",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "TargetSlot"
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsAttackPosValid"
+          },
+          {
+            "Name": "IsDesiredVeloctiyValid"
+          },
+          {
+            "Name": "IsTargetPosValid"
+          },
+          {
+            "Name": "IsUseNavMeshCharacterAvoidance"
+          },
+          {
+            "Name": "IsUsePerceptionAvoidance"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "AttackPos"
+          },
+          {
+            "Name": "DesiredVelocity"
+          },
+          {
+            "Name": "TargetPos",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 11,
+            "Parameter": "TargetPos"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 1,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryActorGetPosition",
+      "GUID": "55677f9d-dff6-4148-1f9f-3a19eedfa0a0",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Position",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "Position"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 2,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathCalcDirAndDistToTarget",
+      "GUID": "a9923656-a707-43e7-f093-fa4cb0e06967",
+      "Precondition Nodes": [
+        1,
+        5
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "CalcOnXZPlane",
+            "Value": false
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "StartPosition",
+            "Node Index": 1,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "TargetPosition",
+            "Node Index": 11,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "TargetDistance",
+            "Is Output": true
+          },
+          {
+            "Name": "TargetWorldYDistance"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "TargetDirection",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 12,
+            "Parameter": "TargetDirection"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Name": "SelectorMathLessOrEqualF32",
+      "GUID": "27d63125-1395-4e21-7093-fdccb3a7272d",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": 2,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "F32Base",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": 5.0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "F32"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 4,
+            "Connection Name": "if_true"
+          },
+          {
+            "Node Index": 5,
+            "Connection Name": "if_false"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 4,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "96569b40-8b69-4a32-c698-01bd4cee8b7c"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 5,
+      "Name": "SelectorGenericForceResult",
+      "GUID": "6bb32cc5-7aa3-465e-72aa-5cc8e329de75",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ForcedResult",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 7,
+            "Connection Name": "Execute"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsGetActorVelocity",
+      "GUID": "8eb0bf25-f978-4c6d-2f9d-2213b0eef1f1",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "AngularVelocity"
+          },
+          {
+            "Name": "LinearVelocity",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 15,
+            "Parameter": "LinearVelocity"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 7,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "bdd8a1eb-a215-4c7e-586-194f5a7b6d80",
+      "Precondition Nodes": [
+        12
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 19,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 19,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 9,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 8,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "2bdd73e8-d206-480f-41bb-43384c0ca8b6"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 9,
+      "Name": "OneShotPhysicsRigidBodyEntityApplyImpulse",
+      "GUID": "da5e68e3-16a-4487-c9a5-f5baad89b2fc",
+      "Precondition Nodes": [
+        11,
+        4
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": true
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "AngularImpulse",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "LinearImpulse",
+            "Node Index": 18,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "TargetRigidBody",
+            "Class": "phive::RigidBodyEntity",
+            "Node Index": 10,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsGetMainRigidBody",
+      "GUID": "bd628502-45f2-4b6b-76ac-384948946315",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "userdefined": [
+          {
+            "Name": "MainBody",
+            "Is Output": true,
+            "Class": "phive::RigidBodyEntity"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 9,
+            "Parameter": "MainBody"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathAddVector3f",
+      "GUID": "3afdc164-a9f6-4821-5097-9fb25cb4e629",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "InputA",
+            "Node Index": 0,
+            "Parameter Index": 2,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "InputB",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "Result"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 12,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathNormalizeVector",
+      "GUID": "5efe5826-fae3-4dc6-53b2-f3e60340738d",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "Vector3f",
+            "Node Index": 2,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Magnitude"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "Vector3f",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 14,
+            "Parameter": "Vector3f"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 13,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "b67384b4-e198-4dd5-f4bd-1bdb385bff7c",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 3,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 14,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathMulF32AndVector3f",
+      "GUID": "7fcefb02-ca5e-481c-c292-f82436e5c08a",
+      "Precondition Nodes": [
+        6
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": 10.0
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "Vector",
+            "Node Index": 12,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Vector",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 15,
+            "Parameter": "Vector"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 15,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathApproachVector3",
+      "GUID": "f04735ea-c718-4f31-1292-1861ddb8c453",
+      "Precondition Nodes": [
+        3,
+        7
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsNormalized",
+            "Value": false
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "Ratio",
+            "Value": 0.5
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "Current",
+            "Node Index": 6,
+            "Parameter Index": 1,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "Target",
+            "Node Index": 14,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 16,
+            "Parameter": "Result"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 16,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathSubVector3f",
+      "GUID": "c3dff665-4e4d-4a8a-3484-0935d91e0888",
+      "Precondition Nodes": [
+        8,
+        3
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "InputA",
+            "Node Index": 15,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "InputB",
+            "Node Index": 6,
+            "Parameter Index": 1,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 18,
+            "Parameter": "Result"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 17,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsRigidBodyEntityGetMass",
+      "GUID": "abc4cb4b-2229-4aba-73b9-2626fe59b39b",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "userdefined": [
+          {
+            "Name": "RigidBodyEntity",
+            "Class": "const phive::RigidBodyEntity",
+            "Node Index": 10,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "LastMass",
+            "Is Output": true
+          },
+          {
+            "Name": "NextMass"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 18,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathMulF32AndVector3f",
+      "GUID": "64584d09-ae8f-4685-6087-48219bc22c76",
+      "Precondition Nodes": [
+        10,
+        9
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": 17,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "Vector",
+            "Node Index": 16,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Vector",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 9,
+            "Parameter": "Vector"
+          },
+          {
+            "Node Index": 17,
+            "Parameter": "F32"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 19,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPhysicsRigidBodyIsGroundHit",
+      "GUID": "3c915250-3328-4c35-baa2-36b01ba47f49",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsCheckGroundObject",
+            "Value": true
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "GroundAngle",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 70.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsGroundHit",
+            "Is Output": true
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x8482e41"
+  }
+}

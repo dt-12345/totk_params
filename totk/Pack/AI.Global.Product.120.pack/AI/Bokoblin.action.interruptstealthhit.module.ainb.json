@@ -1,0 +1,1029 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "Bokoblin.action.interruptstealthhit.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "InterruptSmallHit",
+      "GUID": "e3e06515-7d9c-4239-5587-bdcaf35994bf",
+      "Left Node Index": 1,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "bool": [
+      {
+        "Name": "IsDropWeapon",
+        "Notes": "",
+        "Default Value": false
+      }
+    ]
+  },
+  "Modules": [
+    {
+      "File Path": "Common.action.ExecuteRagdollReaction.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "Common.ExecuteStopAndPlayAS.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "EnemyCommon.QueryCalcRagdollReactionRotationVector.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    }
+  ],
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Name": "OneShotEquipmentUserRequestDropAll",
+      "GUID": "4ff2cba9-70d0-4839-68b8-9c028bd7d22a",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          },
+          {
+            "Name": "IsMemoryEquipment",
+            "Value": true
+          },
+          {
+            "Name": "IsRequestPreserve",
+            "Value": false
+          },
+          {
+            "Name": "IsSetWeaponDropFlag",
+            "Value": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "DropAngularVelocityScale",
+            "Value": 1.0
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "DropSpeedXZMpf",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.0
+          },
+          {
+            "Name": "DropSpeedYMpf",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.0
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "DropPosOffset",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 1,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "29ff0bc6-574e-49c6-b6a9-ea4d1d3fddfd",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 10,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 10,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 4,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 14,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 2,
+      "Name": "",
+      "GUID": "6fd3f691-628f-4db1-4fa5-59ea9fa4b937",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 3,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 15,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Flags": [
+        "Is Module",
+        "Is Resident Node"
+      ],
+      "Name": "Common.action.ExecuteRagdollReaction.module",
+      "GUID": "5ff70cb2-3326-4ff3-92b4-ea06684e7880",
+      "Precondition Nodes": [
+        5
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsCctFollowRagdoll",
+            "Value": true
+          },
+          {
+            "Name": "IsForceDown",
+            "Value": false
+          },
+          {
+            "Name": "IsFromStealthHit",
+            "Value": true
+          },
+          {
+            "Name": "IsReReaction",
+            "Value": true
+          },
+          {
+            "Name": "IsStartASWhenDamaged",
+            "Value": false
+          },
+          {
+            "Name": "ShouldSpeedBeConsideredForTimeOut",
+            "Value": true
+          },
+          {
+            "Name": "YRotateToASBB",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "ExtraDownTime",
+            "Value": 0.0
+          },
+          {
+            "Name": "GroundTime",
+            "Value": 30.0
+          },
+          {
+            "Name": "InAirTimeOutCounter",
+            "Value": -1.0
+          },
+          {
+            "Name": "TimeOutCount",
+            "Value": 300.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASCommandWhenDamaged",
+            "Value": ""
+          },
+          {
+            "Name": "ASDownRecoverCommand",
+            "Value": "DownRecover"
+          },
+          {
+            "Name": "ASDownWaitCommand",
+            "Value": "DownWait"
+          },
+          {
+            "Name": "ASStartCommand",
+            "Value": "SmashDamage"
+          },
+          {
+            "Name": "ForceAnimationDriveName",
+            "Value": ""
+          },
+          {
+            "Name": "RagdollReactionParameter",
+            "Value": "StealthHit"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "IsDownRecover",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "IsEndRagdollReactionWhenLeave",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "VelScale",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 1.0
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "SmashRotate",
+            "Node Index": 18,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsStableRagdoll"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Sequential",
+      "Node Index": 4,
+      "Name": "",
+      "GUID": "cb5a84ad-1eb6-43fc-a1a3-291a6165801a",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BusyPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "NumLoop",
+            "Value": 0
+          },
+          {
+            "Name": "PlayPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsDelayJudge",
+            "Value": false
+          },
+          {
+            "Name": "IsLoop",
+            "Value": false
+          },
+          {
+            "Name": "IsUpdateNextInFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 5,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 2,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 5,
+      "Name": "ExecuteASPlay",
+      "GUID": "56e551c2-9d8e-4719-3090-0a4c040b7acb",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "BusyUntilFinished",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreSameCommand",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "PlayRate",
+            "Value": 1.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASCommand",
+            "Value": "StealthKilled"
+          },
+          {
+            "Name": "Partial",
+            "Value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "Common.ExecuteStopAndPlayAS.module",
+      "GUID": "c38df949-7b0d-4d8d-6a85-4e99c2a21b53",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "BusyUntilFinish",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreSameCommand",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASCommand",
+            "Value": "StealthKilled"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 7,
+      "Name": "",
+      "GUID": "76aee3c3-d166-45b6-6b95-4b4dd760dbb8",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Local Blackboard Index": 0,
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 13,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 8,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "7a9d95bd-66ff-44a7-e91-cf5c36f9dd28"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 9,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryRagdollReactionHasComponent",
+      "GUID": "a70fa5fc-69d2-467e-da91-9fdef7675842",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryGenericMultiBool",
+      "GUID": "64491a3a-1754-4d97-62a4-be450cddcfae",
+      "Precondition Nodes": [
+        0,
+        2
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "Mode",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "MultiBool",
+            "Node Index": -100,
+            "Parameter Index": 2,
+            "Value": false,
+            "Sources": [
+              {
+                "Node Index": 9,
+                "Parameter Index": 0
+              },
+              {
+                "Node Index": 11,
+                "Parameter Index": 0
+              }
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 9,
+            "Parameter": "MultiBool"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryCctHasRagdollController",
+      "GUID": "2f4fee05-4c98-4f85-24a6-be8f985a8d15",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 12,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryActorLife",
+      "GUID": "221a33e9-2f62-49eb-195-a7438c0f6f57",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": true
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "ExtraLife"
+          },
+          {
+            "Name": "Max"
+          },
+          {
+            "Name": "MaxNoBreakLife"
+          },
+          {
+            "Name": "Now"
+          }
+        ],
+        "float": [
+          {
+            "Name": "RemainingPercent",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 13,
+      "Name": "SelectorMathLessOrEqualF32",
+      "GUID": "19a56974-fc9b-48a7-2ebf-850581ca0d59",
+      "Precondition Nodes": [
+        3,
+        4
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": true
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": 12,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "F32Base",
+            "Node Index": 16,
+            "Parameter Index": 0,
+            "Value": 0.5
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 12,
+            "Parameter": "F32"
+          },
+          {
+            "Node Index": 16,
+            "Parameter": "F32Base"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 19,
+            "Connection Name": "if_true"
+          },
+          {
+            "Node Index": 17,
+            "Connection Name": "if_false"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Sequential",
+      "Node Index": 14,
+      "Name": "",
+      "GUID": "6a2a7369-fbb2-44d9-e3a6-701ec2db91e0",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BusyPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "NumLoop",
+            "Value": 0
+          },
+          {
+            "Name": "PlayPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsDelayJudge",
+            "Value": false
+          },
+          {
+            "Name": "IsLoop",
+            "Value": false
+          },
+          {
+            "Name": "IsUpdateNextInFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 6,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 15,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 15,
+      "Name": "",
+      "GUID": "cfab7f1a-207f-40cd-9b6-c8de5a003dab",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 16,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 16,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 7,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 8,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 16,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryBSAInterruptSeqSettingsInterruptSmashSettings",
+      "GUID": "1acc86bf-b69d-42b2-cb83-f801fde44cb0",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": true
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsDropEquipmentSmash",
+            "Is Output": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "DropEquipmentSmashLifePercent",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 17,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "OneShotEquipmentUserRequestDrop",
+      "GUID": "389d7ec5-eaa2-493c-ca9a-8e1387ff8498",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          },
+          {
+            "Name": "IsMemoryEquipment",
+            "Value": true
+          },
+          {
+            "Name": "IsRequestPreserve",
+            "Value": true
+          },
+          {
+            "Name": "IsSetWeaponDropFlag",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "DynamicEquipmentSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 5
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "DropPosOffset",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "DropVelocity",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 18,
+      "Flags": [
+        "Is Precondition Node",
+        "Is Module"
+      ],
+      "Name": "EnemyCommon.QueryCalcRagdollReactionRotationVector.module",
+      "GUID": "2038407f-13ee-430b-3697-12f53caf002e",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "BoneName",
+            "Value": ""
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "RotateVector",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 3,
+            "Parameter": "RotateVector"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 19,
+      "Name": "",
+      "GUID": "cba9b8fa-9fae-4464-e790-e04b7df57a50",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 0,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 20,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 17,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 20,
+      "Name": "OnShotBokoblinBasketItemDropAll",
+      "GUID": "ae1a22cb-4433-46b8-30a9-1aa35c2f3307",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x6bbdcff3"
+  }
+}

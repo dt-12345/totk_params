@@ -1,0 +1,2333 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "Bokoblin.brain.takeorders.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "3864e0bc-a76c-4258-d4bd-eafd733379d8",
+      "Left Node Index": 8,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "int": [
+      {
+        "Name": "NextBrainVerb",
+        "Notes": "",
+        "Default Value": 0
+      }
+    ]
+  },
+  "Modules": [
+    {
+      "File Path": "EnemyCommon.SelectIdleBrainVerb.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "EnemyCommon.ChangeBrainConfusion.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "TakeOrders.BattleCommon.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "EnemyCommon.SelectorCheckTerritory.module.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "EnemyCommon.common.checklostconfusetarget.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "Common.IsReturnFromExternalDamage.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    }
+  ],
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Name": "OneShotBSABrainVerbSetter",
+      "GUID": "c43a13f2-e674-464e-3997-cc39a1767a24",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerb",
+            "Value": 12
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "ForceActionSequenceChange",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 1,
+      "Name": "",
+      "GUID": "c891cc4-4469-4d51-f08d-1f790234c6eb",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 10,
+            "Parameter Index": 2,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 10,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 43,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 9,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 2,
+      "Name": "OneShotTargetSetFromPosAndRot",
+      "GUID": "17c88e68-1d29-4dfe-1588-da6f99f9429b",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 6
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "TargetPos",
+            "Node Index": 10,
+            "Parameter Index": 3,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "TargetVelocity",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "TargetRot",
+            "Class": "const sead::Matrix33f",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryEnemyGetBossOrderData",
+      "GUID": "6c6e6d18-7118-4e3b-594-dc7d0337188b",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "BossOrderType"
+          },
+          {
+            "Name": "NextBrainVerb",
+            "Is Output": true
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsValid",
+            "Is Output": true
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "DesiredPosition",
+            "Is Output": true
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "BattleTargetInfo",
+            "Is Output": true,
+            "Class": "const game::target::TargetInfo"
+          },
+          {
+            "Name": "BossPerceiveData",
+            "Is Output": true,
+            "Class": "const game::perception::PerceiveData"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 35,
+            "Parameter": "BossPerceiveData"
+          },
+          {
+            "Node Index": 40,
+            "Parameter": "BattleTargetInfo"
+          },
+          {
+            "Node Index": 39,
+            "Parameter": "DesiredPosition"
+          },
+          {
+            "Node Index": 54,
+            "Parameter": "NextBrainVerb"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 4,
+      "Name": "",
+      "GUID": "9c44e9ea-77ca-41c1-45b5-a8bc8064703c",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 39,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 6,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 41,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 5,
+      "Name": "",
+      "GUID": "2c0ddca7-a415-46ff-8faf-e424818bc135",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 39,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 2,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 41,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Name": "OneShotTargetSetFromPosAndRot",
+      "GUID": "e7f189c2-169d-4f80-e7af-b9abc85274a3",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 6
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "TargetPos",
+            "Node Index": 35,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "TargetVelocity",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "TargetRot",
+            "Class": "const sead::Matrix33f",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_S32Selector",
+      "Node Index": 7,
+      "Name": "",
+      "GUID": "dea7e5fd-f02c-4533-ada5-3f7d7ec0f762",
+      "Precondition Nodes": [
+        6
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          },
+          {
+            "Name": "InputValue",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectIfSameInstance",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "Input",
+            "Node Index": 31,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 46,
+            "Condition": 0
+          },
+          {
+            "Node Index": 4,
+            "Condition": 1
+          },
+          {
+            "Node Index": 56,
+            "Condition": 5
+          },
+          {
+            "Node Index": 5,
+            "Condition": "Default"
+          }
+        ],
+        "Int Input Link": [
+          {
+            "Node Index": 31,
+            "Parameter": "Input"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_SplitTiming",
+      "Node Index": 8,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "315f2c78-564f-472f-1187-37ed399bfd17",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ChildStateSyncPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 12,
+            "Connection Name": "Enter"
+          },
+          {
+            "Node Index": 14,
+            "Connection Name": "Update"
+          },
+          {
+            "Node Index": 11,
+            "Connection Name": "Leave"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 9,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "EnemyCommon.SelectIdleBrainVerb.module",
+      "GUID": "9ef56eb0-2bca-4e67-a8be-466355d060c8",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsClearAllTargetInfo",
+            "Value": true
+          },
+          {
+            "Name": "IsEnablePatrol",
+            "Value": true
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "PreferReturnToHomePosition",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryTargetGetTargetInfoActor",
+      "GUID": "9b1c4e53-f422-4301-9abe-38ff21921634",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "Affinity"
+          }
+        ],
+        "bool": [
+          {
+            "Name": "isForbidAttackPermission"
+          },
+          {
+            "Name": "IsTargetInfoUpToDate"
+          },
+          {
+            "Name": "IsValidTargetInfo",
+            "Is Output": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "FrameTimeSinceLastUpdate"
+          },
+          {
+            "Name": "FrameTimeSinceTargetSet"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "LastUpdatedAttackPos"
+          },
+          {
+            "Name": "LastUpdatedLinearVelocity"
+          },
+          {
+            "Name": "LastUpdatedLookAtPos"
+          },
+          {
+            "Name": "LastUpdatedPos",
+            "Is Output": true
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "ActorId",
+            "Class": "engine::actor::ActorId"
+          },
+          {
+            "Name": "LastUpdatedRot",
+            "Class": "const sead::Matrix33f"
+          },
+          {
+            "Name": "PerceptionEmitterID",
+            "Is Output": true,
+            "Class": "const u32"
+          },
+          {
+            "Name": "TransceiverID",
+            "Class": "const u32"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "LastUpdatedPos"
+          },
+          {
+            "Node Index": 17,
+            "Parameter": "PerceptionEmitterID"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Name": "OneShotTargetChangeAutoUpdateSenseType",
+      "GUID": "3234f9d8-2fb1-4269-34bc-f6fc05a2fa13",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "SenseType",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 1
+          },
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 12,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "2ada011c-71f1-437d-d8a-75588ea5fb25"
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 13,
+      "Name": "",
+      "GUID": "a6dfa933-4210-4f21-486-96fb93f40d38",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 28,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 40,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 7,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 14,
+      "Name": "SelectorStackNode",
+      "GUID": "3b154b40-f473-4b9a-b98a-037b64c89fa9",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "StackTriggerResult",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 15,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 50,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 38,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 15,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "EnemyCommon.ChangeBrainConfusion.module",
+      "GUID": "75bdb227-90aa-4f85-88b8-5becd2d8de36",
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 16,
+            "Connection Name": "NoTarget"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 16,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "b39b92f2-b6d6-4c06-ac96-8d4190bcb39b"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 17,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPerceptionFilterPickById",
+      "GUID": "c460dd38-4387-45d4-298a-841834525180",
+      "Precondition Nodes": [
+        3,
+        1
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "userdefined": [
+          {
+            "Name": "PerceiveDataList",
+            "Class": "game::perception::PerceiveDataList",
+            "Node Index": 18,
+            "Parameter Index": 0,
+            "Value": 0
+          },
+          {
+            "Name": "PerceptionID",
+            "Class": "const u32",
+            "Node Index": 10,
+            "Parameter Index": 2,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsValidData",
+            "Is Output": true
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "PerceiveData",
+            "Class": "const game::perception::PerceiveData"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 18,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPerceptionMakePerceiveDataList",
+      "GUID": "e143da93-1a81-45db-40bb-65fa3135c3cf",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "PerceptionSenseType",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 1
+          }
+        ]
+      },
+      "Output Parameters": {
+        "userdefined": [
+          {
+            "Name": "PerceiveDataList",
+            "Is Output": true,
+            "Class": "game::perception::PerceiveDataList"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 17,
+            "Parameter": "PerceiveDataList"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 19,
+      "Name": "",
+      "GUID": "163c0d12-8ce7-42fa-b797-277c02501463",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 17,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 17,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 0,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 44,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 20,
+      "Name": "OneShotBSABrainVerbSetter",
+      "GUID": "dbda0c0f-4ff5-48fe-2197-aa2842a59017",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerb",
+            "Value": 7
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "ForceActionSequenceChange",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 21,
+      "Name": "",
+      "GUID": "b1e36fc9-42c1-4e4f-fc98-2f735c4daa39",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 27,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 20,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 26,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 22,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryBSAGetBrainVerb",
+      "GUID": "d99b569e-ab8f-4c7f-fc84-fba5517488c5",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerb"
+          },
+          {
+            "Name": "BrainVerbStatus",
+            "Is Output": true
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsNewBrainVerbThisFrame"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 23,
+            "Parameter": "BrainVerbStatus"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_S32Selector",
+      "Node Index": 23,
+      "Name": "",
+      "GUID": "70dab724-76f0-47ac-c5bc-31947be7cade",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          },
+          {
+            "Name": "InputValue",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectIfSameInstance",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "Input",
+            "Node Index": 22,
+            "Parameter Index": 1,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 24,
+            "Condition": 2
+          },
+          {
+            "Node Index": 24,
+            "Condition": 3
+          },
+          {
+            "Node Index": 25,
+            "Condition": "Default"
+          }
+        ],
+        "Int Input Link": [
+          {
+            "Node Index": 22,
+            "Parameter": "Input"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 24,
+      "Name": "OneShotBSABrainVerbSetter",
+      "GUID": "cbcc5c63-9487-4e22-6882-07413aa7bf4d",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerb",
+            "Value": 12
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "ForceActionSequenceChange",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 25,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "4e894aaf-535a-441f-74b3-8192bb68865d"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 26,
+      "Name": "OneShotTargetSetFromPerceptionID",
+      "GUID": "917d26ac-c514-4409-d794-793b0ccdadee",
+      "Precondition Nodes": [
+        1,
+        1
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "PerceptionSenseType",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0
+          },
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 6
+          }
+        ],
+        "bool": [
+          {
+            "Name": "EnableAutomaticUpdate",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          },
+          {
+            "Name": "IsTrack",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          },
+          {
+            "Name": "SetLastPositionIfNotFound",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "TargetLastPosition",
+            "Node Index": 10,
+            "Parameter Index": 3,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "TargetPerceptionID",
+            "Class": "const u32",
+            "Node Index": 10,
+            "Parameter Index": 2,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "FoundTargetFromSense"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 27,
+      "Name": "OneShotPerceptionResetTracked",
+      "GUID": "ce9f9da8-5baa-4146-cea4-098e0d168cba",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "userdefined": [
+          {
+            "Name": "PerceiveData",
+            "Class": "const game::perception::PerceiveData",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0
+          },
+          {
+            "Name": "PerceptionID",
+            "Class": "const u32",
+            "Node Index": 10,
+            "Parameter Index": 2,
+            "Value": 0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 28,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "TakeOrders.BattleCommon.module",
+      "GUID": "1cebdf64-d5ba-418f-bca7-3c553e3d1511",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "SenseTypeForUpdateBattleTarget",
+            "Value": 1
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 29,
+      "Name": "SelectorGenericMultiBool",
+      "GUID": "a7a62b2-a510-4e0c-9694-1d7ea5692786",
+      "Precondition Nodes": [
+        0,
+        8
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "Mode",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsOnlyEnter",
+            "Value": false
+          },
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "MultiBool",
+            "Node Index": -100,
+            "Parameter Index": 2,
+            "Value": false,
+            "Sources": [
+              {
+                "Node Index": 3,
+                "Parameter Index": 0
+              },
+              {
+                "Node Index": 36,
+                "Parameter Index": 0
+              }
+            ]
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 3,
+            "Parameter": "MultiBool"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 13,
+            "Connection Name": "True"
+          },
+          {
+            "Node Index": 46,
+            "Connection Name": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 30,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryBlackboardGetBool",
+      "GUID": "41d64f15-9a0f-47ab-6fa1-c40411a131a6",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "IsReceivedAngryOrder"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 31,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryGetBossOrderFromBlackboard",
+      "GUID": "bae3dfe5-ddbe-45eb-8c97-62baaa5f558a",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "BossOrder",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 7,
+            "Parameter": "BossOrder"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 32,
+      "Name": "OneShotSendMessageBossOrder",
+      "GUID": "66ba3308-f588-45b7-2597-d2196a9b5891",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "MessageType",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 896663552
+          },
+          {
+            "Name": "TranceiverId",
+            "Node Index": 35,
+            "Parameter Index": 5,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Int Input Link": [
+          {
+            "Node Index": 35,
+            "Parameter": "TranceiverId"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 33,
+      "Name": "",
+      "GUID": "66d98bbc-bb62-4906-8497-f201616f92cd",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 32,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 45,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 46,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 34,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "c38bd463-8e9c-4cc4-d588-f1f9125fa220"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 35,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPerceptionExtractPerceiveData",
+      "GUID": "73b51b8-9a70-42d4-73aa-aa13f27d3038",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "userdefined": [
+          {
+            "Name": "PerceiveData",
+            "Class": "const game::perception::PerceiveData",
+            "Node Index": 3,
+            "Parameter Index": 1,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerb"
+          },
+          {
+            "Name": "MainActionVerb"
+          },
+          {
+            "Name": "PerceiveState"
+          },
+          {
+            "Name": "RidingMode"
+          },
+          {
+            "Name": "SubActionVerb"
+          },
+          {
+            "Name": "TransceiverID",
+            "Is Output": true
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsHearningEmitLoudNoise"
+          },
+          {
+            "Name": "IsRidingModeValid"
+          }
+        ],
+        "float": [
+          {
+            "Name": "PerceptionLevel"
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "Pos",
+            "Is Output": true
+          },
+          {
+            "Name": "Velocity"
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "PerceptionID",
+            "Class": "const u32"
+          },
+          {
+            "Name": "Rot",
+            "Class": "const sead::Matrix33f"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 6,
+            "Parameter": "Pos"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 36,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryCanOrderReceiveStatus",
+      "GUID": "5f717725-1ed7-421a-7889-12c9a19c17c1",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "CanReceive",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 37,
+      "Name": "ExecuteSetBossOrderToBlackboard",
+      "GUID": "306fc382-3c9a-412f-7386-b107f3abd22a",
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "BossOrderType",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 38,
+      "Name": "",
+      "GUID": "67f58ee0-3308-453e-789f-a0971e163ecd",
+      "Precondition Nodes": [
+        5
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 30,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 30,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 7,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 29,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 39,
+      "Name": "ExecuteSetBossOrderDesiredPos",
+      "GUID": "23c1990a-1634-4bcc-188-dd78e8f47a40",
+      "Precondition Nodes": [
+        0,
+        0
+      ],
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "IsValidBossOrder",
+            "Node Index": 3,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "DesiredPos",
+            "Node Index": 3,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 3,
+            "Parameter": "IsValidBossOrder"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 40,
+      "Name": "ExecuteSetTargetDirectRegularly",
+      "GUID": "f6c86058-28fb-4585-938c-eb9b6b188afc",
+      "Precondition Nodes": [
+        0
+      ],
+      "Input Parameters": {
+        "userdefined": [
+          {
+            "Name": "TargetInfo",
+            "Class": "const game::target::TargetInfo",
+            "Node Index": 3,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 41,
+      "Name": "SelectorIsIgnoreStatusForBossOrder",
+      "GUID": "37842947-ea56-4626-4397-04934aa83350",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 33,
+            "Connection Name": "Ignore"
+          },
+          {
+            "Node Index": 34,
+            "Connection Name": "NotIgnore"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 42,
+      "Name": "SelectorStackNode",
+      "GUID": "643b882e-f478-4477-e387-e6f486beacfc",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "StackTriggerResult",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 51,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 1,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 47,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 19,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 21,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 43,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "8bc9f791-f31e-4487-9c88-ebb14817d2ef"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 44,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "1d0f781a-7d16-4ca4-a1a5-c90ba019d90e"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 45,
+      "Name": "ExecuteBlackboardSetS32",
+      "GUID": "76e3edbe-fd3e-4541-2a84-55d417084767",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "IgnoreBossID"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "S32",
+            "Node Index": 35,
+            "Parameter Index": 5,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Int Input Link": [
+          {
+            "Node Index": 35,
+            "Parameter": "S32"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 46,
+      "Name": "",
+      "GUID": "35a62842-1bc9-44f7-f781-1da1be9051c6",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 37,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 54,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 42,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 47,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "EnemyCommon.SelectorCheckTerritory.module.module",
+      "GUID": "d2c671fa-1657-43a7-6cae-7120924f6c58",
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 49,
+            "Connection Name": "IsOutOfTerritory"
+          },
+          {
+            "Node Index": 48,
+            "Connection Name": "InsideTerritory"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 48,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "b95caa8b-ce1d-43e4-5eb9-4b4bff966b3e"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 49,
+      "Name": "OneShotBSABrainVerbSetter",
+      "GUID": "69f16e7c-af05-4db8-81b6-761029cfe383",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerb",
+            "Value": 29
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "ForceActionSequenceChange",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 50,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "EnemyCommon.common.checklostconfusetarget.module",
+      "GUID": "95cc32d3-1d48-4c8f-d193-97eec6861b2a",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerbAfterLostConfuseTarget",
+            "Value": 7
+          }
+        ],
+        "bool": [
+          {
+            "Name": "IsResetBossOrder",
+            "Value": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 16,
+            "Connection Name": "None"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_S32Selector",
+      "Node Index": 51,
+      "Name": "",
+      "GUID": "bccceb86-d48c-4142-7eb7-d3d6143f72b6",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          },
+          {
+            "Name": "InputValue",
+            "Local Blackboard Index": 0,
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectIfSameInstance",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "Input",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 52,
+            "Condition": 0
+          },
+          {
+            "Node Index": 53,
+            "Condition": "Default"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 52,
+      "Name": "ExecuteGenericSetResultNone",
+      "GUID": "9141cf61-63c4-42cb-de81-ca5ea20576fb"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 53,
+      "Name": "OneShotBSABrainVerbSetter",
+      "GUID": "32325e55-1fe9-4e24-7ab5-062168e00cfe",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BrainVerb",
+            "Local Blackboard Index": 0,
+            "Value": 29
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "ForceActionSequenceChange",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 54,
+      "Name": "ExecuteBlackboardSetS32",
+      "GUID": "212743f9-63b6-4a64-3a6-5b1cc2aaf0f6",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "NextBrainVerb"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "S32",
+            "Node Index": 3,
+            "Parameter Index": 1,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Int Input Link": [
+          {
+            "Node Index": 3,
+            "Parameter": "S32"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 55,
+      "Flags": [
+        "Is Precondition Node",
+        "Is Module"
+      ],
+      "Name": "Common.IsReturnFromExternalDamage.module",
+      "GUID": "b8825478-d6ac-43fc-50a6-604f4c9e93cd",
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsValid",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 56,
+      "Name": "",
+      "GUID": "50c8fba6-f8fb-459e-4b6-1c57e48a0f13",
+      "Precondition Nodes": [
+        9
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 55,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 55,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 24,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 23,
+            "Condition": "False"
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x94470511"
+  }
+}

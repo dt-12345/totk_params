@@ -1,0 +1,842 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "NpcTulinSage_SageSkill.actionseq.root",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "da35f073-5ad8-4853-20a7-2ec162f31ce9",
+      "Left Node Index": 10,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "bool": [
+      {
+        "Name": "PrevIsAir",
+        "Notes": "",
+        "Default Value": false
+      }
+    ]
+  },
+  "Modules": [
+    {
+      "File Path": "NpcTulinSage.brain.AirOrGroundProc.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    }
+  ],
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Name": "ExecuteBSAInvokeActionVerbWithArgs",
+      "GUID": "7d4e47af-ee45-42cf-7da2-201e3499ee75",
+      "Precondition Nodes": [
+        0,
+        0
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ActionSlot",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "ActionVerb",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 110
+          },
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "UseNavMeshCharacterAvoidance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          },
+          {
+            "Name": "UsePathfinding",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          },
+          {
+            "Name": "UsePerceptionAvoidance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "DesiredDistanceFromTarget",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": -1.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ActionVerbVariation",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": ""
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "AttackPos",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              999999.0,
+              999999.0,
+              999999.0
+            ]
+          },
+          {
+            "Name": "DesiredVelocity",
+            "Node Index": 1,
+            "Parameter Index": 1,
+            "Value": [
+              999999.0,
+              999999.0,
+              999999.0
+            ]
+          },
+          {
+            "Name": "TargetPos",
+            "Node Index": 1,
+            "Parameter Index": 0,
+            "Value": [
+              999999.0,
+              999999.0,
+              999999.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 1,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryTargetGetTargetInfoPosition",
+      "GUID": "12485cf5-f5e9-4cd3-8e96-cf5f43f5c935",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "TargetSlot",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 1
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsTargetRotValid"
+          },
+          {
+            "Name": "IsValidTargetInfo",
+            "Is Output": true
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "TargetPos",
+            "Is Output": true
+          },
+          {
+            "Name": "TargetVel",
+            "Is Output": true
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "TargetRot",
+            "Class": "const sead::Matrix33f"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 0,
+            "Parameter": "TargetPos"
+          },
+          {
+            "Node Index": 0,
+            "Parameter": "TargetVel"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 2,
+      "Name": "",
+      "GUID": "26e24f0b-7551-4b4e-5ca5-b5c3dacb65d4",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 1,
+            "Parameter Index": 1,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 0,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 3,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Name": "ExecuteBSASetActionVerb",
+      "GUID": "3fa5fb81-c54b-40cf-57be-711522dc2c1f",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ActionSlot",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 2
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "ActionVerb",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 40
+          }
+        ],
+        "string": [
+          {
+            "Name": "ActionVerbVariation",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 4,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryBSAIsReturnFromInterruptThisFrame",
+      "GUID": "343355b8-eedd-4a9b-e797-b220f898cdf6",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "DamageReactionOnly",
+            "Value": true
+          },
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 5,
+      "Name": "",
+      "GUID": "9900e257-cf66-4036-d3af-1533d5fbdffb",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 4,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 4,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 17,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 13,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryIsTulinSageSkillState",
+      "GUID": "f537a6e4-4e13-4472-ea85-b1305d75243d",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "State",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 7,
+            "Parameter": "State"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_S32Selector",
+      "Node Index": 7,
+      "Name": "",
+      "GUID": "a5311d55-84d7-48a6-aa80-bafe7eb1f6e4",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          },
+          {
+            "Name": "InputValue",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectIfSameInstance",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "Input",
+            "Node Index": 6,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 5,
+            "Condition": 2
+          },
+          {
+            "Node Index": 12,
+            "Condition": 3
+          },
+          {
+            "Node Index": 8,
+            "Condition": "Default"
+          }
+        ],
+        "Int Input Link": [
+          {
+            "Node Index": 6,
+            "Parameter": "Input"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Name": "ExecuteGenericSetResultFailure",
+      "GUID": "64ee98b0-5ce0-4285-ed9d-850942e592d5"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 9,
+      "Name": "ExecuteGenericSetResultFailure",
+      "GUID": "4a792efb-92b7-41ec-9b1-fc79124df9af"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "SelectorChangeChildOnFinishResult",
+      "GUID": "611d6580-20dd-4e2e-b5a8-818c35ff8b46",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 7,
+            "Connection Name": "ObservedChild"
+          },
+          {
+            "Node Index": 11,
+            "Connection Name": "ChildOnSuccess"
+          },
+          {
+            "Node Index": 11,
+            "Connection Name": "ChildOnFailure"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Name": "ExecuteBSASetActionVerb",
+      "GUID": "959fcfd2-c975-449b-94b2-4c1090815cf5",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ActionSlot",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 4
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "ActionVerb",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 40
+          }
+        ],
+        "string": [
+          {
+            "Name": "ActionVerbVariation",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 12,
+      "Name": "ExecuteBSASetActionVerb",
+      "GUID": "4c4d6edf-8843-40c8-3bb7-f96013f20d0e",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ActionSlot",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "ActionVerb",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 111
+          }
+        ],
+        "string": [
+          {
+            "Name": "ActionVerbVariation",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 13,
+      "Name": "",
+      "GUID": "f1b67f78-42dc-4cb9-52b4-84f07da733c2",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 15,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 2,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 14,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryTulinAirOrGroundCheck",
+      "GUID": "8cbf3ca7-31e0-40d1-95b7-dd52aef7ef94",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 15,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "NpcTulinSage.brain.AirOrGroundProc.module",
+      "GUID": "b8e23ce7-aa25-4ae6-65b8-76844988d36f",
+      "Precondition Nodes": [
+        3
+      ],
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "ChangeAirFollow",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "isAirFollow",
+            "Node Index": 14,
+            "Parameter Index": 0,
+            "Value": true
+          },
+          {
+            "Name": "IsAnimFlying",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 14,
+            "Parameter": "isAirFollow"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 16,
+      "Name": "OneShotSetSageSkillCoolTime",
+      "GUID": "898385ce-d7ff-40bd-9289-7cf26f9a3fe3",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "SageType",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 4
+          }
+        ],
+        "float": [
+          {
+            "Name": "Time",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 17,
+      "Name": "",
+      "GUID": "8e540c3f-9102-46bf-89a7-6be12710d038",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 1
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 9,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 16,
+            "Connection Name": ""
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x37a7eb15"
+  }
+}

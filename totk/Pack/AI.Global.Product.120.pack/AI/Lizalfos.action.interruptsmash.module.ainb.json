@@ -1,0 +1,939 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "Lizalfos.action.interruptsmash.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "a236fda9-d919-45fa-cfa8-7c6f289f183c",
+      "Left Node Index": 0,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "string": [
+      {
+        "Name": "RagdollReactionParam",
+        "Notes": "",
+        "Default Value": "FullDynamic"
+      },
+      {
+        "Name": "ForceAnimDrive",
+        "Notes": "",
+        "Default Value": ""
+      }
+    ],
+    "float": [
+      {
+        "Name": "VelScale",
+        "Notes": "",
+        "Default Value": 1.0
+      }
+    ],
+    "bool": [
+      {
+        "Name": "IsUnderwater",
+        "Notes": "",
+        "Default Value": false,
+        "File Reference": {
+          "Filename": "Work/Component/Blackboard/BlackboardParamTable/UnderwaterUser.engine__component__BlackboardParamTable.gyml"
+        }
+      }
+    ],
+    "vec3f": [
+      {
+        "Name": "RagollReactionRotationVector",
+        "Notes": "",
+        "Default Value": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "Modules": [
+    {
+      "File Path": "Common.action.smash.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "Common.action.ExecuteRagdollReaction.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    },
+    {
+      "File Path": "EnemyCommon.QueryCalcRagdollReactionRotationVector.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    }
+  ],
+  "Nodes": [
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 0,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "3ee116d8-aa8f-471c-3eba-4c9f686b019c",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Local Blackboard Index": 0,
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 3,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 1,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_SplitTiming",
+      "Node Index": 1,
+      "Name": "",
+      "GUID": "5becac2f-581e-2af-1575-e078b59667ba",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ChildStateSyncPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 18,
+            "Connection Name": "Enter"
+          },
+          {
+            "Node Index": 5,
+            "Connection Name": "Update"
+          },
+          {
+            "Node Index": 19,
+            "Connection Name": "Leave"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 2,
+      "Flags": [
+        "Is Module",
+        "Is Resident Node"
+      ],
+      "Name": "Common.action.smash.module",
+      "GUID": "9004c138-5a98-141c-cb67-a74d961ac201",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsRecover",
+            "Value": true
+          },
+          {
+            "Name": "IsResetRigidBodyModeWhenNotRecover",
+            "Value": false
+          },
+          {
+            "Name": "isSendDirectionAngleToAS",
+            "Value": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "DownRecoverMoveSpeed",
+            "Value": 10.0
+          },
+          {
+            "Name": "DownTIme",
+            "Value": 10.0
+          },
+          {
+            "Name": "IsReduceVelAfterLanding",
+            "Value": 0.0
+          },
+          {
+            "Name": "SmashCorrection",
+            "Local Blackboard Index": 0,
+            "Value": 1.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASDownCommand",
+            "Value": "DownWait"
+          },
+          {
+            "Name": "ASDownRecoverCommand",
+            "Value": "DownRecover"
+          },
+          {
+            "Name": "ASSmashCommand",
+            "Value": "SmashDamage"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 3,
+      "Name": "",
+      "GUID": "64e2a619-478e-fd45-60da-00c78618b96b",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 15,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 15,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 6,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 2,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 4,
+      "Name": "ExecuteInterruptSmashCommonProcess",
+      "GUID": "8a291a3c-3c20-307e-a186-5ac8b1fb5bec",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsDropTool",
+            "Value": true
+          },
+          {
+            "Name": "IsMemoryEquipment",
+            "Value": true
+          },
+          {
+            "Name": "IsSetWeaponDropFlag",
+            "Value": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 5,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "dd2c4718-ca5b-1d20-8497-e347826dfe58",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 3,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 4,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_SplitTiming",
+      "Node Index": 6,
+      "Name": "",
+      "GUID": "ce19afb3-7579-c7df-6dd2-bdb54e30b2d4",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "ChildStateSyncPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 9,
+            "Connection Name": "Enter"
+          },
+          {
+            "Node Index": 12,
+            "Connection Name": "Update"
+          },
+          {
+            "Node Index": 17,
+            "Connection Name": "Leave"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 7,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QuerySensorHitGetLastAttacker",
+      "GUID": "671c3368-289b-18ed-d9ac-6d0f5b0b1c0b",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "AttackerType",
+            "Is Output": true
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "LastAttackerPos"
+          },
+          {
+            "Name": "LastAttackerVel"
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "LastAttacker",
+            "Class": "game::actor::ActorLinkBase"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 8,
+            "Parameter": "AttackerType"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QuerySensorHitIsMatchAttackerType",
+      "GUID": "8d3e65d2-4d13-8a80-7bc7-36680b9ad435",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "AttackerTypeA",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 2
+          },
+          {
+            "Name": "AttackerTypeB",
+            "Node Index": 7,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 9,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "b0a7d69c-f865-18b0-69e5-1d7fb55c88a8",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 8,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 8,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 10,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 11,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Name": "ExecuteBlackboardSetString",
+      "GUID": "d997d25d-1499-102f-4b6a-60f6dca92e47",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "RagdollReactionParam"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "string": [
+          {
+            "Name": "String",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": "HeadShot"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Name": "ExecuteBlackboardSetString",
+      "GUID": "79ec0902-d908-d19c-202e-214c8c263e10",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "RagdollReactionParam"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "string": [
+          {
+            "Name": "String",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": "FullDynamic"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 12,
+      "Flags": [
+        "Is Module",
+        "Is Resident Node"
+      ],
+      "Name": "Common.action.ExecuteRagdollReaction.module",
+      "GUID": "a0ce9345-3074-222c-1e5f-14ea38d60657",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsCctFollowRagdoll",
+            "Value": true
+          },
+          {
+            "Name": "IsForceDown",
+            "Value": false
+          },
+          {
+            "Name": "IsFromStealthHit",
+            "Value": false
+          },
+          {
+            "Name": "IsReReaction",
+            "Value": true
+          },
+          {
+            "Name": "IsStartASWhenDamaged",
+            "Value": false
+          },
+          {
+            "Name": "ShouldSpeedBeConsideredForTimeOut",
+            "Value": true
+          },
+          {
+            "Name": "YRotateToASBB",
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "ExtraDownTime",
+            "Value": 0.0
+          },
+          {
+            "Name": "GroundTime",
+            "Value": 30.0
+          },
+          {
+            "Name": "InAirTimeOutCounter",
+            "Value": -1.0
+          },
+          {
+            "Name": "TimeOutCount",
+            "Value": 300.0
+          }
+        ],
+        "string": [
+          {
+            "Name": "ASCommandWhenDamaged",
+            "Value": ""
+          },
+          {
+            "Name": "ASDownRecoverCommand",
+            "Value": "DownRecover"
+          },
+          {
+            "Name": "ASDownWaitCommand",
+            "Value": "DownWait"
+          },
+          {
+            "Name": "ASStartCommand",
+            "Value": "SmashDamage"
+          },
+          {
+            "Name": "ForceAnimationDriveName",
+            "Local Blackboard Index": 1,
+            "Value": ""
+          },
+          {
+            "Name": "RagdollReactionParameter",
+            "Local Blackboard Index": 0,
+            "Value": "FullDynamic"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "IsDownRecover",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "IsEndRagdollReactionWhenLeave",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "VelScale",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": 1.0
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "SmashRotate",
+            "Node Index": 13,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "IsStableRagdoll"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 13,
+      "Flags": [
+        "Is Precondition Node",
+        "Is Module"
+      ],
+      "Name": "EnemyCommon.QueryCalcRagdollReactionRotationVector.module",
+      "GUID": "feb460ef-9e76-abbe-2268-8343b1adcdfe",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "BoneName",
+            "Value": ""
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "RotateVector",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 12,
+            "Parameter": "RotateVector"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 14,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryRagdollReactionHasComponent",
+      "GUID": "3e3c34b-7870-df28-86ee-01d2269a7e23",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 15,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryGenericMultiBool",
+      "GUID": "f21db8b5-eb90-2df7-18ff-aae879f2a5f6",
+      "Precondition Nodes": [
+        3,
+        5
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "Mode",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "MultiBool",
+            "Node Index": -100,
+            "Parameter Index": 2,
+            "Value": false,
+            "Sources": [
+              {
+                "Node Index": 14,
+                "Parameter Index": 0
+              },
+              {
+                "Node Index": 16,
+                "Parameter Index": 0
+              }
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 14,
+            "Parameter": "MultiBool"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 16,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryCctHasRagdollController",
+      "GUID": "138b2e22-216c-5d7a-cc01-7d6b10563348",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 17,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "d9f79cba-54e8-15a0-9a07-2e518b815fea"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 18,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "OneShotRiderGetOff",
+      "GUID": "fe00b26b-5cac-42fa-5f33-93be61024981",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "AnmDrivenBoneMtxMode",
+            "Value": false
+          },
+          {
+            "Name": "ExecuteEveryFrame",
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 19,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "63fcdb48-df5f-8f7c-96-924353c31b3d"
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x1802e012"
+  }
+}

@@ -1,0 +1,1143 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "WindControl.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "38c4cc55-2c42-44c0-7a8a-ed6497956733",
+      "Left Node Index": 5,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "float": [
+      {
+        "Name": "WindMaxLength",
+        "Notes": "WindControlLength",
+        "Default Value": 5.0
+      },
+      {
+        "Name": "Radius",
+        "Notes": "WindControl",
+        "Default Value": 2.0
+      },
+      {
+        "Name": "RadiusPlayer",
+        "Notes": "WindControl",
+        "Default Value": -1.0
+      },
+      {
+        "Name": "MaxSpeed",
+        "Notes": "WindControl",
+        "Default Value": 0.6600000262260437
+      }
+    ],
+    "bool": [
+      {
+        "Name": "IsProcWindChemical",
+        "Notes": "",
+        "Default Value": false
+      },
+      {
+        "Name": "IsCylinder",
+        "Notes": "WindControl",
+        "Default Value": true
+      },
+      {
+        "Name": "IsAutoCalcWindLength",
+        "Notes": "WindControl",
+        "Default Value": true
+      },
+      {
+        "Name": "IsEmitEffBySelfActor",
+        "Notes": "",
+        "Default Value": false
+      }
+    ],
+    "vec3f": [
+      {
+        "Name": "LastWindDir",
+        "Notes": "",
+        "Default Value": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "Modules": [
+    {
+      "File Path": "_LocalModule_9a4293976cce.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    }
+  ],
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Name": "ExecuteChemicalActivateWindCapsule",
+      "GUID": "699d9fd-3f30-4cf9-59b5-91e4de74bec8",
+      "Precondition Nodes": [
+        2,
+        0
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "IsEmitEffectBySelf",
+            "Local Blackboard Index": 3,
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "IsActive",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          },
+          {
+            "Name": "IsCylinder",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": false
+          },
+          {
+            "Name": "IsDebugDraw",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          },
+          {
+            "Name": "IsExtendCylinderEdge",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "Length",
+            "Node Index": 13,
+            "Parameter Index": 0,
+            "Value": 1.0
+          },
+          {
+            "Name": "Radius",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 1,
+            "Value": 1.0
+          },
+          {
+            "Name": "RadiusPlayer",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 2,
+            "Value": 0.0
+          },
+          {
+            "Name": "Speed",
+            "Node Index": 3,
+            "Parameter Index": 0,
+            "Value": 1.0
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "Mat34F",
+            "Class": "const sead::Matrix34f",
+            "Node Index": 1,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 13,
+            "Parameter": "Length"
+          },
+          {
+            "Node Index": 3,
+            "Parameter": "Speed"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 1,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathVec3fMat33fToMtx34f",
+      "GUID": "162215d8-f393-4f94-c3ae-d58f9150d68f",
+      "Precondition Nodes": [
+        5,
+        1
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "Translation",
+            "Node Index": 14,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "userdefined": [
+          {
+            "Name": "Rotation",
+            "Class": "const sead::Matrix33f",
+            "Node Index": 2,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "userdefined": [
+          {
+            "Name": "Matrix34f",
+            "Is Output": true,
+            "Class": "const sead::Matrix34f"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 0,
+            "Parameter": "Matrix34f"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 2,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathMakeVectorRotationToMat33f",
+      "GUID": "7a98e481-cab2-4e5a-8f97-ccc4e01c75a7",
+      "Precondition Nodes": [
+        6
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "FromVector",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          {
+            "Name": "ToVector",
+            "Node Index": 15,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "userdefined": [
+          {
+            "Name": "Mat33F",
+            "Is Output": true,
+            "Class": "const sead::Matrix33f"
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "Mat33F"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathMulF32",
+      "GUID": "1870c618-a241-40a3-a78f-b65dad5c0c48",
+      "Precondition Nodes": [
+        3,
+        9
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": 4,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": 18,
+            "Parameter Index": 0,
+            "Value": 0.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 4,
+            "Parameter": "InputA"
+          },
+          {
+            "Node Index": 18,
+            "Parameter": "InputB"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 4,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathMulF32",
+      "GUID": "866c5a1f-6337-4756-c99b-c5c1c5eba9a0",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "InputA",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 3,
+            "Value": 0.0
+          },
+          {
+            "Name": "InputB",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 30.0
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "Result",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 5,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "6b3f475b-3588-4558-cb95-5d299c3b98c9",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 13,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 6,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Name": "SelectorMathCompareFloat",
+      "GUID": "47f88878-adf9-4369-98b7-3ea7c682d24b",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "NoChangeWhenChildIsBusy",
+            "Value": false
+          },
+          {
+            "Name": "SelectChildOnEnterOnly",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "ValueA",
+            "Node Index": 3,
+            "Parameter Index": 0,
+            "Value": 0.0
+          },
+          {
+            "Name": "ValueB",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": 0.0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 3,
+            "Parameter": "ValueA"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 7,
+            "Connection Name": "Bigger"
+          },
+          {
+            "Node Index": 9,
+            "Connection Name": "Equal"
+          },
+          {
+            "Node Index": 9,
+            "Connection Name": "Smaller"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 7,
+      "Name": "",
+      "GUID": "95a38570-b5f7-4e6f-6f9e-b89004390de5",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 0,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 8,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 12,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 10,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Name": "ExecuteBlackboardSetBool",
+      "GUID": "e1bfff16-e886-4a6d-ac83-12bc1e3f399b",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "IsProcWindChemical"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 9,
+      "Name": "ExecuteBlackboardSetBool",
+      "GUID": "40ab9162-8641-407f-1b9a-fee88303c6cf",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": true
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "IsProcWindChemical"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Bool",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS"
+            ],
+            "Value": false
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 10,
+      "Name": "ExecuteBlackboardSetVec3fToBlackBoard",
+      "GUID": "4a70b6d-dfc-4c40-ff85-f32927cd951a",
+      "Precondition Nodes": [
+        7
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": false
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": false
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "LastWindDir"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "Vector",
+            "Node Index": 16,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 11,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryMathDotVector",
+      "GUID": "f31698dd-3ccb-4ab0-638d-9b1eec58a797",
+      "Precondition Nodes": [
+        8
+      ],
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "vec3f": [
+          {
+            "Name": "FromVector",
+            "Node Index": 17,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "ToVector",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 12,
+      "Name": "ExecuteBlackboardSetF32",
+      "GUID": "60066821-3293-4163-f086-99a020a552bb",
+      "Precondition Nodes": [
+        4
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "BlackboardType",
+            "Value": 1
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ExecuteOnce",
+            "Value": false
+          },
+          {
+            "Name": "IsIgnoreNotExistsError",
+            "Value": true
+          }
+        ],
+        "string": [
+          {
+            "Name": "BlackboardKey",
+            "Value": "WindChmStabilityRate"
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "F32",
+            "Node Index": 11,
+            "Parameter Index": 0,
+            "EXB Index": 0,
+            "Function": {
+              "Base Index Pre-Command Entry": -1,
+              "Pre-Entry Static Memory Usage": 0,
+              "Output Data Type": "f32",
+              "Input Data Type": "f32",
+              "Instructions": [
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "ParamTbl",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 0,
+                  "RHS Value": 0.8999999761581421
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "Input",
+                  "LHS Index/Value": 4,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "UserFunction",
+                  "Data Type": "f32",
+                  "Static Memory Index": 0,
+                  "Signature": "Max( Float, Float, Float )"
+                },
+                {
+                  "Type": "Subtract",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "ParamTbl",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 0,
+                  "RHS Value": 0.8999999761581421
+                },
+                {
+                  "Type": "Multiply",
+                  "Data Type": "f32",
+                  "LHS Source": "StaticMem",
+                  "RHS Source": "ParamTbl",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 4,
+                  "RHS Value": 10.0
+                },
+                {
+                  "Type": "Store",
+                  "Data Type": "f32",
+                  "LHS Source": "Output",
+                  "RHS Source": "StaticMem",
+                  "LHS Index/Value": 0,
+                  "RHS Index/Value": 0
+                },
+                {
+                  "Type": "Terminator"
+                }
+              ]
+            },
+            "Value": 0.0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 11,
+            "Parameter": "F32"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 13,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "_LocalModule_9a4293976cce.module",
+      "GUID": "3a7113bb-2579-4a8b-79a7-be54e05b1e8b",
+      "Precondition Nodes": [
+        11,
+        10
+      ],
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "IsAutoCalcWindLength",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 2,
+            "Value": false
+          },
+          {
+            "Name": "IsProcWindChemical",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": false
+          }
+        ],
+        "float": [
+          {
+            "Name": "WindMaxLength",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Local Blackboard Index": 0,
+            "Value": 0.0
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "WindDir",
+            "Node Index": 20,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "Name": "WindPosition",
+            "Node Index": 19,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "WindLength",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 14,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "b62e14d4-a7ad-4a75-b582-ffd0211a109d",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "WindPosition"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Translation",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "Translation"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 15,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "cfc34868-71c0-49f1-8a8e-a113a2783f84",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "WindDir"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "ToVector",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "ToVector"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 16,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "cfc34868-71c0-49f1-8a8e-a113a2783f84",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "WindDir"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "Vector",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 10,
+            "Parameter": "Vector"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 17,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "cfc34868-71c0-49f1-8a8e-a113a2783f84",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "WindDir"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "FromVector",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 11,
+            "Parameter": "FromVector"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_F32",
+      "Node Index": 18,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "2945be35-2250-4a07-f4a7-a491b1f8091f",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "RotSpeedRatio"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "float": [
+          {
+            "Name": "InputB",
+            "Is Output": true
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 19,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "244600d3-4e88-4c01-d5b4-823a01855667",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "WindPosition"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "WindPosition",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 13,
+            "Parameter": "WindPosition"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 20,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "fe5c9f44-8ff7-474c-79f-df4d75f08857",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "WindDir"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "WindDir",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 13,
+            "Parameter": "WindDir"
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x12b4275d"
+  }
+}

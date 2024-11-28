@@ -1,0 +1,598 @@
+{
+  "Info": {
+    "Magic": "AIB ",
+    "Version": "0x407",
+    "Filename": "QuadrupedCommon_MoveToWithContinuousPathfinding.module",
+    "File Category": "AI"
+  },
+  "Commands": [
+    {
+      "Name": "Root",
+      "GUID": "d559acc4-d297-4b7f-e998-3ae9fdb84eb2",
+      "Left Node Index": 5,
+      "Right Node Index": -1
+    }
+  ],
+  "Local Blackboard Parameters": {
+    "int": [
+      {
+        "Name": "MinUseGear",
+        "Notes": "",
+        "Default Value": 1
+      },
+      {
+        "Name": "MaxUseGear",
+        "Notes": "",
+        "Default Value": 2
+      },
+      {
+        "Name": "UseGearType",
+        "Notes": "",
+        "Default Value": 0
+      },
+      {
+        "Name": "AutoStopAndTurnMode",
+        "Notes": "",
+        "Default Value": 0
+      },
+      {
+        "Name": "MinGearAtAutoGearDown",
+        "Notes": "",
+        "Default Value": 1
+      }
+    ],
+    "float": [
+      {
+        "Name": "PathfindIntervalFrames",
+        "Notes": "",
+        "Default Value": 30.0
+      },
+      {
+        "Name": "PathfindIntervalHighFrequencyFrames",
+        "Notes": "",
+        "Default Value": 30.0
+      },
+      {
+        "Name": "GoalDistanceTolerance",
+        "Notes": "",
+        "Default Value": 0.0
+      }
+    ],
+    "bool": [
+      {
+        "Name": "CanUseRiderGearInput",
+        "Notes": "",
+        "Default Value": false
+      },
+      {
+        "Name": "IsAutoGearDownEnabled",
+        "Notes": "",
+        "Default Value": false
+      },
+      {
+        "Name": "HasToDecelerateNearGoal",
+        "Notes": "",
+        "Default Value": false
+      },
+      {
+        "Name": "WaitUntilPathSucceed",
+        "Notes": "",
+        "Default Value": false
+      },
+      {
+        "Name": "IsKeepGearLimit",
+        "Notes": "",
+        "Default Value": false
+      }
+    ]
+  },
+  "Modules": [
+    {
+      "File Path": "QuadrupedCommon_MoveTo.module.ainb",
+      "File Category": "AI",
+      "Count": 1
+    }
+  ],
+  "Nodes": [
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 0,
+      "Flags": [
+        "Is Module"
+      ],
+      "Name": "QuadrupedCommon_MoveTo.module",
+      "GUID": "7d0de045-e8c2-4a37-e58f-344c1ba7e3c0",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "AutoStopAndTurnMode",
+            "Local Blackboard Index": 3,
+            "Value": 0
+          },
+          {
+            "Name": "MaxUseGear",
+            "Local Blackboard Index": 1,
+            "Value": 3
+          },
+          {
+            "Name": "MinGearAtAutoGearDown",
+            "Local Blackboard Index": 4,
+            "Value": 1
+          },
+          {
+            "Name": "MinUseGear",
+            "Local Blackboard Index": 0,
+            "Value": 3
+          },
+          {
+            "Name": "UseGearType",
+            "Local Blackboard Index": 2,
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "CanUseRiderGearInput",
+            "Local Blackboard Index": 0,
+            "Value": false
+          },
+          {
+            "Name": "HasToDecelerateNearGoal",
+            "Local Blackboard Index": 2,
+            "Value": true
+          },
+          {
+            "Name": "IsAutoGearDownEnabled",
+            "Local Blackboard Index": 1,
+            "Value": true
+          },
+          {
+            "Name": "IsCheckSwitchingInGetSwitchableGear",
+            "Value": true
+          },
+          {
+            "Name": "IsKeepGearLimit",
+            "Local Blackboard Index": 4,
+            "Value": false
+          },
+          {
+            "Name": "IsRequestPath",
+            "Value": false
+          },
+          {
+            "Name": "IsWaitAsyncQuery",
+            "Value": false
+          },
+          {
+            "Name": "WaitUntilPathSucceed",
+            "Local Blackboard Index": 3,
+            "Value": true
+          }
+        ],
+        "float": [
+          {
+            "Name": "GoalDistanceTolerance",
+            "Local Blackboard Index": 2,
+            "Value": 5.0
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "IsDisableAvoidance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": false
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "Destination",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 1,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "QueryPathfindingGetState",
+      "GUID": "d410a9cc-194d-4a3d-f0b7-e4b950191bec",
+      "Internal Parameters": {
+        "bool": [
+          {
+            "Name": "OutputOnlyOnEnter",
+            "Value": false
+          }
+        ]
+      },
+      "Output Parameters": {
+        "int": [
+          {
+            "Name": "State",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 2,
+            "Parameter": "State"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_S32Selector",
+      "Node Index": 2,
+      "Name": "",
+      "GUID": "ab57558f-ebd2-441e-ad82-a0f1aea4e70d",
+      "Precondition Nodes": [
+        0
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          },
+          {
+            "Name": "InputValue",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectIfSameInstance",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "int": [
+          {
+            "Name": "Input",
+            "Node Index": 1,
+            "Parameter Index": 0,
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 3,
+            "Condition": 3
+          },
+          {
+            "Node Index": 6,
+            "Condition": "Default"
+          }
+        ],
+        "Int Input Link": [
+          {
+            "Node Index": 1,
+            "Parameter": "Input"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 3,
+      "Name": "ExecuteGenericSetResultFailure",
+      "GUID": "aa10dfb-cf25-49c1-408b-c59f1aeb5a1d"
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 4,
+      "Name": "ExecutePathfindingRequestPathIfGoalChanges",
+      "GUID": "5e163f48-2c83-4477-dfa3-d776a4060067",
+      "Precondition Nodes": [
+        1
+      ],
+      "Internal Parameters": {
+        "float": [
+          {
+            "Name": "CheckInterval",
+            "Local Blackboard Index": 1,
+            "Value": 30.0
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "RepathDistance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0.5
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "GoalPos",
+            "Node Index": 9,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_Simultaneous",
+      "Node Index": 5,
+      "Flags": [
+        "Is Resident Node"
+      ],
+      "Name": "",
+      "GUID": "d37de703-7910-47ec-fdad-cd3b280dd687",
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "EndPolicy",
+            "Value": 0
+          },
+          {
+            "Name": "ResultPolicy",
+            "Value": 0
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Standard Link": [
+          {
+            "Node Index": 7,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 0,
+            "Connection Name": ""
+          },
+          {
+            "Node Index": 2,
+            "Connection Name": ""
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 6,
+      "Name": "ExecuteGenericSetResultSuccess",
+      "GUID": "4dbebf98-6c56-47c8-2a92-646e62c0210a"
+    },
+    {
+      "Node Type": "Element_BoolSelector",
+      "Node Index": 7,
+      "Name": "",
+      "GUID": "4192ed01-224c-4a59-ebc-92a1583959af",
+      "Precondition Nodes": [
+        3
+      ],
+      "Internal Parameters": {
+        "int": [
+          {
+            "Name": "CalculateTiming",
+            "Value": 0
+          }
+        ],
+        "bool": [
+          {
+            "Name": "ChildFrameSync",
+            "Value": false
+          },
+          {
+            "Name": "InputValue",
+            "Value": false
+          },
+          {
+            "Name": "IsNoSelectWhenChildBusy",
+            "Value": false
+          }
+        ]
+      },
+      "Input Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Node Index": 11,
+            "Parameter Index": 0,
+            "Value": false
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 11,
+            "Parameter": "Input"
+          }
+        ],
+        "Standard Link": [
+          {
+            "Node Index": 4,
+            "Condition": "True"
+          },
+          {
+            "Node Index": 8,
+            "Condition": "False"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "UserDefined",
+      "Node Index": 8,
+      "Name": "ExecutePathfindingRequestPathIfGoalChanges",
+      "GUID": "f9c685b6-b0be-4291-51ad-f5b88c4e36ea",
+      "Precondition Nodes": [
+        2
+      ],
+      "Internal Parameters": {
+        "float": [
+          {
+            "Name": "CheckInterval",
+            "Local Blackboard Index": 0,
+            "Value": 30.0
+          }
+        ]
+      },
+      "Input Parameters": {
+        "float": [
+          {
+            "Name": "RepathDistance",
+            "Node Index": -1,
+            "Parameter Index": 0,
+            "Flags": [
+              "Pulse TLS",
+              "Is Output"
+            ],
+            "Value": 0.5
+          }
+        ],
+        "vec3f": [
+          {
+            "Name": "GoalPos",
+            "Node Index": 10,
+            "Parameter Index": 0,
+            "Value": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 9,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "c5bf3c70-a82f-4f77-37a9-d17f0c219e10",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "Destination"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "GoalPos",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 4,
+            "Parameter": "GoalPos"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Vec3f",
+      "Node Index": 10,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "c5bf3c70-a82f-4f77-37a9-d17f0c219e10",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "Destination"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "vec3f": [
+          {
+            "Name": "GoalPos",
+            "Is Output": true
+          }
+        ]
+      },
+      "Linked Nodes": {
+        "Bool/Float Input Link and Output Link": [
+          {
+            "Node Index": 8,
+            "Parameter": "GoalPos"
+          }
+        ]
+      }
+    },
+    {
+      "Node Type": "Element_ModuleIF_Input_Bool",
+      "Node Index": 11,
+      "Flags": [
+        "Is Precondition Node"
+      ],
+      "Name": "",
+      "GUID": "9e95f955-90b-404c-2db2-ae39f63bc92f",
+      "Internal Parameters": {
+        "string": [
+          {
+            "Name": "Name",
+            "Value": "IsPathfindingHighFrequency"
+          }
+        ]
+      },
+      "Output Parameters": {
+        "bool": [
+          {
+            "Name": "Input",
+            "Is Output": true
+          }
+        ]
+      }
+    }
+  ],
+  "File Hashes": {
+    "Unknown File Hash": "0x16494bf9"
+  }
+}
